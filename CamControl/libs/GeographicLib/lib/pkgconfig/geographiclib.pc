@@ -1,0 +1,14 @@
+prefix=D:/Desktop/Gitlab_Remote/SensorManagement/CamControl/libs/GeographicLib_install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+bindir=${exec_prefix}/bin
+
+Name: GeographicLib
+Description: A library for geographic projections
+Version: 2.2
+URL: https://geographiclib.sourceforge.io
+
+Requires:
+Libs: -L${libdir} -lGeographicLib
+Cflags: -I${includedir}

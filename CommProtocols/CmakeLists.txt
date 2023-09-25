@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.9)
+project(cameraIf VERSION 1.0.1 DESCRIPTION "Camera interface librarayr")
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+
+include(ExternalProject)
+include(FetchContent)
+link_directories("${_qt5Core_install_prefix}/lib")
+
+
+FetchContent_Declare(
+    Pelco_D
+    GIT_REPOSITORY https://github.com/ConstantRobotics/Pelco_D_ProtocolParser.git
+    GIT_TAG         origin/master
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Pelco_D_ProtocolParser
+)
+
+FetchContent_Declare(
+    onvif
+    GIT_REPOSITORY https://github.com/Tereius/libONVIF.git
+    GIT_TAG         origin/master
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libONVIF
+)
+
+# 2.
+FetchContent_GetProperties(Pelco_D)
+if (NOT Pelco_D_POPULATED)
+    FetchContent_Populate(Pelco_D )
+endif ()
+
+FetchContent_GetProperties(onvif)
+if (NOT onvif_POPULATED)
+#    FetchContent_Populate(onvif)
+endif ()
+
+
+include_directories(/d/msys64/mingw64/qt5-static/include/ /d/msys64/mingw64/qt5-static/include/QtCore ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CameraIF/inc ${CMAKE_CURRENT_SOURCE_DIR}/Pelco_D_ProtocolParser/PelcoDProtocolParser/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/libONVIF/src ${CMAKE_CURRENT_SOURCE_DIR}/libONVIF/src/generated ${CMAKE_CURRENT_SOURCE_DIR}/libONVIF/src/gsoap ${CMAKE_CURRENT_SOURCE_DIR}/libONVIF/build/src)
+
+add_library(cameraIf STATIC ${CMAKE_CURRENT_SOURCE_DIR}/CameraIF/PelcoDTCP.cxx ${CMAKE_CURRENT_SOURCE_DIR}/CameraIF/PelcoDSerial.cxx ${CMAKE_CURRENT_SOURCE_DIR}/CameraIF/ONVIF.cxx 
+		${CMAKE_CURRENT_SOURCE_DIR}/Pelco_D_ProtocolParser/PelcoDProtocolParser/src/PelcoDProtocolParser.cpp)
+
+target_link_libraries(cameraIf  Qt5::Core  ${CMAKE_CURRENT_SOURCE_DIR}/../CamerIFLibarary/libONVIF/build/src/libonvifcommon.dll.a ${CMAKE_CURRENT_SOURCE_DIR}/../CamerIFLibarary/libONVIF/build/src/libonvifptz.dll.a ${CMAKE_CURRENT_SOURCE_DIR}/../CamerIFLibarary/build/libcameraif.a 
+${CMAKE_CURRENT_SOURCE_DIR}/../CamerIFLibarary/libONVIF/build/src/libonvifdevice.dll.a ${CMAKE_CURRENT_SOURCE_DIR}/../CamerIFLibarary/libONVIF/build/src/libonvifdiscovery.dll.a ${Boost_LIBRARIES})

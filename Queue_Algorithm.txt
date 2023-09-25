@@ -1,0 +1,130 @@
+INPUT BLOCK:
+------------
+	This block is an interface to ISR360.
+	INPUTS:
+	------
+	It accepts following structured inputs containing updated information about the targets and the asset:
+		- To be decided ...
+	METHODS:
+	--------
+	AddTargets:	Adds newly detected targets or update the already detected targets. It fills an array of "_target" structure that includes:
+		1. int ID:		ID of the target being added/updated
+		2. double time:		The instant at which the current data is recorded
+		3. _target_type: 	Target category and its size on the frame (bounding box area)
+		4. _position: 		Position of the target in the world/local coordinates and its standard deviation
+		5. _velocity:		Velocity of the targets in the world/local coordinates and its standard deviation
+		6. _target_threat:	Threat level on Saaty's scale and detection confidence of the target
+	UpdateAssets:	Updates the current position and orientation of the asset/platform in the world coordinates. It fills the "_asset" structure that includes:
+		1. int ID:		ID of the asset being updated
+		2. lon, lat, alt:	Longitude, latitude and altitude of the asset
+		3. elevation, azimuth:	Elevation and azimuthal angle of the asset 
+	OUTPUTS:
+	-------
+	Following information is available as output of the block:
+		1. vector<_target> Targets, TargetsPrev:	Current and previous information about the targets
+		2. vector<_asset> Assets, AssetsPrev:		Current and previous state of the asset
+		3. double t, t_prev:				Time at which the current and previous asset states are recorded
+
+COVERAGE BLOCK:
+---------------
+	This block uses the information from the INPUT BLOCK as well as from the user to generate a priority queue structure. The cameras point at the target/region with the 
+	highest priority. The cameras then zoom in on the target until either its priority drops below another target or the rate of change of priority becomes zero or a user 
+	defined time limit is reached. 
+	INPUTS:
+	-------
+	The inputs comprise:
+		1. Outputs of the INPUT BLOCK
+		2. User defined regions of interest based on tactical knowledge (directions likely to generate more threats) that include:
+			- ID of the region (-ve)
+			- Geographical location of a region (currently a single point region is supported) 
+		3. User defined collection of that weights that prioritize following aspects of the target:
+			- Threat
+			- Standard deviation of position/velocity
+			- Category and size of the target
+			- Detection confidence  
+		4. Method to calculate the priorities of the regions of interest and the queue share for the regions 
+	METHODS:
+	--------
+	CalcPriority:	It calculates the priority of the target or the region of interest. For targets, it is the weighted sum of threat, standard deviation of position, 
+			detection confidence and target size. For regions, the priority is either defined by the user or it is average of all the current priorities in 
+			the queue (average is updated every time a new entry is added).
+	PopQueue:	Returns a queue element using priority based random toss
+	Normalize:	This function normalizes the total priority targets or regions or both in the queue to a number between 0 and 1
+	ModifyQueue:	Either updates the last stoppage criteria of the queue element or removes the queue element because the camera could not locate the target
+	UpdateQueue:	Adds a new queue element (target/region) or update the exisitng queue element. Each queue element (_queue_element) has following structure:
+		1. double priority:		Normalized riority of the element
+		2. double Npriority:		Non-normalized priority of the element
+		2. int ID:			ID of the element that is used to find the target/region from the inputs
+		3. int count:			Number of times the element has been popped.
+		4. int last_stoppage_criteria:	The criteria (priority reduction, time out, stale priority) that stopped zooming in on the element
+		5. double last_coverage_time:	Time instant at which the element was covered most recently
+	OUTPUTS:
+	--------
+	The output of this block includes:
+		- vector<_queue_element>:	Priority queue of updated targets and regions of interests
+
+COMMAND BLOCK:
+--------------
+	It uses the parameters of the camera to calculate the camera commands. 
+	INPUTS:
+	-------
+	The inputs comprise:
+		1. Outputs of the COVERAGE BLOCK
+		2. Absolute position and orientation of the camera
+		3. Camera config
+	OUTPUTS:
+	--------
+		1. vector<commands>
+		2. 
+
+	Modify:		After generating and passing the commands, wait for few time instants and delete the target from the queue if no update received
+	
+		     	
+
+
+
+
+
+
+
+
+
+
+OUTPUT BLOCK:
+-------------
+	This block communicates with either ISR360 or directly the cameras to give the PTZ commands as well as query the current PTZ state. It supports PelcoD and ONVIF communication
+	protocols for configuring, initializing and controlling the cameras. Each instance of this block would run on a separate thread to allow normal operation of other CPU processes.
+	INPUTS:
+	-------
+	1. Command Stack
+		- PTZ Command 
+		- Command Type
+		- Speed
+		- Command Value
+	2. Camera Configuration
+		- Initial State
+		- Communication Details
+		- FOV
+		- Zoom to FOV Link
+		- Full Details from the Data Sheet
+	METHODS:
+	--------
+	Initialize
+	Configure
+	SendCommand
+	Wait
+	QueryState
+	GetStatus
+	
+	OUTPUTS:
+	--------
+	1. PTZ Feedback
+		- Pan, Zoom,Tilt
+		- Moving / Not Moving
+	2. ONVIF / Pelco-D commands
+
+   
+	
+
+
+	    
