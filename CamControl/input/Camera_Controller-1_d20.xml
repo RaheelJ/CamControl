@@ -71,7 +71,7 @@
             <resolution>0.05</resolution>
             <Pan>
                 <continuous_pan>true</continuous_pan>
-                <step_size_pan>0.05</step_size_pan>
+                <step_size_pan>45</step_size_pan>
                 <span_pan>360.0</span_pan>
             </Pan>
             <Tilt>
@@ -82,7 +82,7 @@
             <Speed>
                 <max_speed>120.0</max_speed>
                 <speed_control>fixed</speed_control>
-                <fixed_speed>60.0</fixed_speed>
+                <fixed_speed>20.0</fixed_speed>
             </Speed>
         </PTZsettings>
         <CommSettings>
@@ -92,7 +92,7 @@
             <NetworkSettings>
                 <username>admin</username>
                 <password>admin</password>
-                <IP>127.000.000.001</IP>
+                <IP>192.168.32.150</IP>
                 <port>200</port>
             </NetworkSettings>
         </CommSettings>

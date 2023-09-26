@@ -10,7 +10,7 @@ int main()
 	char user_input{ 'x' };
 	bool status{ false };
 
-	config_file = "Camera_Controller-1_d20.xml";
+	config_file = "input/Camera_Controller-1_d20.xml";
 	status = CamHandler.Initialize(config_file, message);
 	if (!status)
 	{
