@@ -56,6 +56,7 @@ struct _serial_comm
 
 struct _camera
 {
+	std::string profile = "Profile1";
 	std::string asset_ID;
 	bool GPS_available{ true };
 	bool night_vision{ true };

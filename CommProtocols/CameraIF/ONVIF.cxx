@@ -1,5 +1,4 @@
-
-#include "ONVIF.hpp"
+#include <CameraIF/inc/ONVIF.hpp>
 #include <QString>
 
 using namespace CamIF;
@@ -17,8 +16,9 @@ CamIF_ONVIF::CamIF_ONVIF(QString ip, QString port, QString user, QString pass, Q
 		for (auto service : servicesResponse.GetResultObject()->Service) {
 			qDebug() << "namespace:" << service->Namespace.toStdString().c_str() << "Url:" << service->XAddr.toStdString().c_str();
 			if (service->Namespace == "http://www.onvif.org/ver20/ptz/wsdl") {
-				Ptz = new OnvifPtzClient(QUrl(service->XAddr.toStdString().c_str()), ctx,nullptr);
-				Ptz->SetAuth(user, pass, AUTO);
+				Ptz = new OnvifPtzClient(QUrl(service->XAddr.toStdString().c_str()), ctx, nullptr);
+				ctx->SetAuth(user, pass);
+				//Ptz->SetAuth(user, pass, AUTO);
 				Profile = profile;
 				/*Request<_tptz__GotoHomePosition> request;
 				request.ProfileToken = profile;
@@ -202,5 +202,18 @@ bool CamIF_ONVIF::CamStop(void)
 		qDebug() << "failed to stop ";
 		return false;
 	}
+	return true;
+}
+
+bool CamIF_ONVIF::CamQueryPan()
+{
+	return true;
+}
+bool CamIF_ONVIF::CamQueryTilt()
+{
+	return true;
+}
+bool CamIF_ONVIF::CamQueryZoom()
+{
 	return true;
 }

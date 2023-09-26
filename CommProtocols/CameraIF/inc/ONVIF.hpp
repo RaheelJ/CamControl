@@ -1,9 +1,10 @@
 #pragma once
-#include "CamGenClass.hpp"
-#include "OnvifPtzClient.h"
-#include "OnvifDiscoveryClient.h"
-#include "OnvifDevice.h"
-#include "OnvifDeviceClient.h"
+
+#include <CameraIF/inc/CamGenClass.hpp>
+#include <libONVIF/include/OnvifPtzClient.h>
+#include <libONVIF/include/OnvifDiscoveryClient.h>
+#include <libONVIF/include/OnvifDevice.h>
+#include <libONVIF/include/OnvifDeviceClient.h>
 #include <QString>
 
 namespace CamIF
@@ -43,6 +44,9 @@ namespace CamIF
         /*go down left */
         bool CamStop(void);
 
+        bool CamQueryPan();
+        bool CamQueryTilt();
+        bool CamQueryZoom();
 
     private:
         bool motionwrapper(float pan, float panSpeed, float tilt, float tiltSpeed, float zoom, float zoomSpeed);

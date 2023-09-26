@@ -1,4 +1,6 @@
 #include <NetworkedOutput.h>
+#include <CameraIF/inc/PelcoDTCP.hpp>
+#include <CameraIF/inc/ONVIF.hpp>
 #include <pugixml/pugixml.hpp>
 #include <iostream>
 #include <chrono>
@@ -158,6 +160,15 @@ bool OutputBlock::Assign_Camera(const std::string& cam_ID)
 		if (CamConfig[assigned_cam_index].protocol == "PELCO_D_TCP")
 		{
 			CAM = new CamIF::CamIF_PelcoDTCP(CamConfig[assigned_cam_index].network.IP.c_str(), std::to_string(CamConfig[assigned_cam_index].network.port).c_str(), CamConfig[assigned_cam_index].cam_address);
+			CAM->CameraOn();
+
+			count_pan = 0;
+			count_tilt = 0;
+			count_zoom = 0;
+		}
+		else if (CamConfig[assigned_cam_index].protocol == "PELCO_D_TCP")
+		{
+			CAM = new CamIF::CamIF_ONVIF(CamConfig[assigned_cam_index].network.IP.c_str(), std::to_string(CamConfig[assigned_cam_index].network.port).c_str(), CamConfig[assigned_cam_index].network.username.c_str(), CamConfig[assigned_cam_index].network.password.c_str(), CamConfig[assigned_cam_index].profile.c_str());
 			CAM->CameraOn();
 
 			count_pan = 0;

@@ -2,7 +2,6 @@
 
 #include "Auxiliary.h"
 #include <string>
-#include <CameraIF/inc/PelcoDTCP.hpp>
 #include <CameraIF/inc/CamGenClass.hpp>
 
 class OutputBlock

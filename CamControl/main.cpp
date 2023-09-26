@@ -19,7 +19,7 @@ int main()
 		return -1;
 	}
 
-	CamHandler.Assign_Camera("cam_1");
+	CamHandler.Assign_Camera("cam_2");
 	while (1)
 	{
 		user_input = _getch();
