@@ -166,7 +166,7 @@ bool OutputBlock::Assign_Camera(const std::string& cam_ID)
 			count_tilt = 0;
 			count_zoom = 0;
 		}
-		else if (CamConfig[assigned_cam_index].protocol == "PELCO_D_TCP")
+		else if (CamConfig[assigned_cam_index].protocol == "ONVIF")
 		{
 			CAM = new CamIF::CamIF_ONVIF(CamConfig[assigned_cam_index].network.IP.c_str(), std::to_string(CamConfig[assigned_cam_index].network.port).c_str(), CamConfig[assigned_cam_index].network.username.c_str(), CamConfig[assigned_cam_index].network.password.c_str(), CamConfig[assigned_cam_index].profile.c_str());
 			CAM->CameraOn();

@@ -61,12 +61,12 @@ bool CamIF_ONVIF::motionwrapper(float pan, float panSpeed, float tilt, float til
 	rRequest.Speed->Zoom->x = zoomSpeed;
 	response = Ptz->RelativeMove(rRequest);
 
-	delete rRequest.Translation->PanTilt;
-	delete rRequest.Translation->Zoom;
-	delete rRequest.Translation;
-	delete rRequest.Speed->PanTilt;
-	delete rRequest.Speed->Zoom;
-	delete rRequest.Speed;
+	//delete rRequest.Translation->PanTilt;
+	//delete rRequest.Translation->Zoom;
+	//delete rRequest.Translation;
+	//delete rRequest.Speed->PanTilt;
+	//delete rRequest.Speed->Zoom;
+	//delete rRequest.Speed;
 
 	if (response.IsFault())
 	{
@@ -150,43 +150,43 @@ bool CamIF_ONVIF::ZoomStop(void)
 /*tiltagle 0-180  speed 0 -->1 */
 bool CamIF_ONVIF::CamDown(float tiltangle, float tiltspeed)
 {
-	return motionwrapper(0, 0, -tiltangle/180, tiltspeed, 0, 0);
+	return motionwrapper(0, 0, -tiltangle, tiltspeed, 0, 0);
 }
 /*tiltagle 0-180  speed 0 -->1 */
 bool CamIF_ONVIF::CamUp(float tiltangle, float tiltspeed)
 {
-	return motionwrapper(0,0, tiltangle/180, tiltspeed,0,0);
+	return motionwrapper(0,0, tiltangle, tiltspeed,0,0);
 }
 /*panangle 0-180  speed 0 -->1 */
 bool CamIF_ONVIF::CamLeft(float panangle, float panspeed)
 {
-	return motionwrapper(-panangle / 180, panspeed, 0, 0, 0, 0);
+	return motionwrapper(-panangle, panspeed, 0, 0, 0, 0);
 }
 /*panangle 0-180  speed 0 -->1 */
 bool CamIF_ONVIF::CamRigth(float panangle, float panspeed)
 {
-	return motionwrapper(panangle / 180, panspeed, 0, 0, 0, 0);
+	return motionwrapper(panangle, panspeed, 0, 0, 0, 0);
 }
 /*go up right */
 bool CamIF_ONVIF::CamUpRight(float panangle, float panspeed, float tiltangle, float tiltspeed)
 {
-	return motionwrapper(panangle / 180, panspeed, tiltangle / 180, tiltspeed, 0, 0);
+	return motionwrapper(panangle, panspeed, tiltangle, tiltspeed, 0, 0);
 }
 /*go up left */
 bool CamIF_ONVIF::CamUpLeft(float panangle, float panspeed, float tiltangle, float tiltspeed)
 {
-	return motionwrapper(-panangle / 180, panspeed, tiltangle / 180, tiltspeed, 0, 0);
+	return motionwrapper(-panangle, panspeed, tiltangle, tiltspeed, 0, 0);
 }
 
 /*go down right */
 bool CamIF_ONVIF::CamDownRight(float panangle, float panspeed, float tiltangle, float tiltspeed)
 {
-	return motionwrapper(panangle / 180, panspeed, -tiltangle / 180, tiltspeed, 0, 0);
+	return motionwrapper(panangle, panspeed, -tiltangle, tiltspeed, 0, 0);
 }
 /*go down left */
 bool CamIF_ONVIF::CamDownLeft(float panangle, float panspeed, float tiltangle, float tiltspeed)
 {
-	return motionwrapper(-panangle / 180, panspeed, -tiltangle / 180, tiltspeed, 0, 0);
+	return motionwrapper(-panangle, panspeed, -tiltangle, tiltspeed, 0, 0);
 }
 /*go down left */
 bool CamIF_ONVIF::CamStop(void)

@@ -151,8 +151,8 @@
             <NetworkSettings>
                 <username>admin</username>
                 <password>admin</password>
-                <IP>127.000.000.001</IP>
-                <port>200</port>
+                <IP>192.168.32.189</IP>
+                <port>80</port>
             </NetworkSettings>
         </CommSettings>
     </CameraManager>
