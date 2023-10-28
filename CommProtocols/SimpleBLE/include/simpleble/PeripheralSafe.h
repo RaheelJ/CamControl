@@ -1,7 +1,9 @@
 #pragma once
 
 #include <optional>
+
 #include <simpleble/export.h>
+
 #include <simpleble/Peripheral.h>
 #include <simpleble/Service.h>
 

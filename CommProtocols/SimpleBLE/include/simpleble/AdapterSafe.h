@@ -1,7 +1,7 @@
 #pragma once
 
 #include <simpleble/export.h>
-#include <optional>
+
 #include <simpleble/Adapter.h>
 #include <simpleble/PeripheralSafe.h>
 
