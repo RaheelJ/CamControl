@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{aa876384-d571-42e8-8ac8-930b01862dfc}</ProjectGuid>
     <RootNamespace>CamControl</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -121,7 +121,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>libs\GeographicLib\lib;..\CommProtocols\libONVIF\lib;..\CommProtocols\SimpleBLE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GeographicLib-i.lib;simpleble.lib;onvifanalyticsd.lib;onvifcommond.lib;onvifdeviced.lib;onvifdiscoveryd.lib;onvifdisplayd.lib;onvifeventd.lib;onvifimagingd.lib;onvifmedia2d.lib;onvifmediad.lib;onvifptzd.lib;onvifreceiverd.lib;onvifrecordingd.lib;onvifreplayd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GeographicLib-i.lib;simpleble-debug.lib;onvifanalyticsd.lib;onvifcommond.lib;onvifdeviced.lib;onvifdiscoveryd.lib;onvifdisplayd.lib;onvifeventd.lib;onvifimagingd.lib;onvifmedia2d.lib;onvifmediad.lib;onvifptzd.lib;onvifreceiverd.lib;onvifrecordingd.lib;onvifreplayd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

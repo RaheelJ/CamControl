@@ -1,4 +1,5 @@
 #include <WitmotionWT901/WitmotionBT.hpp>
+#include <SimpleBLE/Utils.h>
 #include <iostream>
 
 bool bt_link::node::Initialize(_bt_peripheral_config in_peripheral_config, std::vector<_bt_service> in_services)
