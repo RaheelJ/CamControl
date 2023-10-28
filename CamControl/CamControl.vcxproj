@@ -114,13 +114,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WIN32_WINNT=0x0601;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(VCPKG_ROOT)\installed\x64-windows\include\qt5\QtCore;libs\boost_1_83_0;libs;$(VCPKG_ROOT)\installed\x64-windows\include\qt5;include;..\CommProtocols;libs\GeographicLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCPKG_ROOT)\installed\x64-windows\include\qt5\QtCore;libs\boost_1_83_0;libs;$(VCPKG_ROOT)\installed\x64-windows\include\qt5;include;..\CommProtocols;libs\GeographicLib\include;..\CommProtocols\SimpleBLE\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>libs\GeographicLib\lib;..\CommProtocols\libONVIF\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GeographicLib-i.lib;onvifanalyticsd.lib;onvifcommond.lib;onvifdeviced.lib;onvifdiscoveryd.lib;onvifdisplayd.lib;onvifeventd.lib;onvifimagingd.lib;onvifmedia2d.lib;onvifmediad.lib;onvifptzd.lib;onvifreceiverd.lib;onvifrecordingd.lib;onvifreplayd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>libs\GeographicLib\lib;..\CommProtocols\libONVIF\lib;..\CommProtocols\SimpleBLE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GeographicLib-i.lib;simpleble.lib;onvifanalyticsd.lib;onvifcommond.lib;onvifdeviced.lib;onvifdiscoveryd.lib;onvifdisplayd.lib;onvifeventd.lib;onvifimagingd.lib;onvifmedia2d.lib;onvifmediad.lib;onvifptzd.lib;onvifreceiverd.lib;onvifrecordingd.lib;onvifreplayd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,6 +145,7 @@
     <ClCompile Include="..\CommProtocols\CameraIF\ONVIF.cxx" />
     <ClCompile Include="..\CommProtocols\CameraIF\PelcoDTCP.cxx" />
     <ClCompile Include="..\CommProtocols\Pelco_D_Parser\PelcoDProtocolParser.cpp" />
+    <ClCompile Include="..\CommProtocols\WitmotionWT901\WitmotionBT.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Auxiliary.cpp" />
     <ClCompile Include="src\CommandStack.cpp" />

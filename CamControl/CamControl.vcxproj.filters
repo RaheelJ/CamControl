@@ -45,5 +45,8 @@
     <ClCompile Include="..\CommProtocols\CameraIF\ONVIF.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CommProtocols\WitmotionWT901\WitmotionBT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
