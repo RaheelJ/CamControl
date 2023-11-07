@@ -23,7 +23,6 @@ class OutputBlock
 		bool QueryPTZ(std::string mechanism, double& position);
 		bool GetStatus();
 		bool Assign_Camera(const std::string& cam_ID);
-
 };
 
 

@@ -61,8 +61,8 @@ namespace bt_link
 		std::string Get_Name();
 
 	private:
-		_bt_peripheral_config peripheral_config;
-		std::vector<_bt_service> Services;
+		_bt_peripheral_config peripheral_config;		/* Name, Mac Address */
+		std::vector<_bt_service> Services;				/* Name, Service UUID, Characteristic UUID, Operation */
 		SimpleBLE::Peripheral peripheral;
 		const int max_subscriptions = 2;
 		std::vector<std::string> Notifications;
@@ -84,7 +84,7 @@ namespace bt_link
 	};
 	class source
 	{
-		_bt_adapter_config adapter_config;
+		_bt_adapter_config adapter_config;				/* Scan Time, Max Nodes */
 		SimpleBLE::Adapter adapter;
 		std::vector<node*> Nodes;
 		int max_nodes_allowed = 0;

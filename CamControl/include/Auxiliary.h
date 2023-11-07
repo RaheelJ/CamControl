@@ -4,6 +4,7 @@
 
 struct _asset
 {
+	double time;
 	std::string ID;
 	bool in_geo;
 	double lon_x, lat_y, alt_z;
@@ -12,6 +13,7 @@ struct _asset
 };
 struct _cam_state
 {
+	double time;
 	bool is_absolute = true;
 	double offset_x = 0, offset_y = 0;
 	double pan, tilt, zoom;
@@ -78,7 +80,7 @@ struct _camera
 	_cam_state state;
 	_cam_state initial_state;
 };
-enum _cam_command
+enum _cam_command_type
 {
 	LEFT, 
 	RIGHT, 
@@ -89,7 +91,14 @@ enum _cam_command
 	UP_LEFT, 
 	DOWN_LEFT,
 	ZOOM_IN,
-	ZOOM_OUT
+	ZOOM_OUT,
+	SET_SPEED_PAN,
+	SET_SPEED_TILT
+};
+struct _cam_command
+{
+	_cam_command_type type;
+	double value = 0;
 };
 
 struct _geo_point
@@ -160,6 +169,22 @@ struct _region_interest
 	_geo_point pointA, pointB, pointC, pointD;
 };
 
+enum _operator
+{
+	LESS_THAN,
+	GREATER_THAN,
+	LESS_THAN_OR_EQUAL,
+	GREATER_THAN_OR_EQUAL,
+	EQUAL
+};
+struct _rule_fuzzy
+{
+	std::string name;
+	std::string err_variable;
+	_operator comp_operator;
+	double ref_err;
+	double out_rate;
+};
 
 double ReadParam(double, double, double, int&);
 double RandNum(double min, double max);

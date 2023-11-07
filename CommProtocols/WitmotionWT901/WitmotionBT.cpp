@@ -225,7 +225,17 @@ int bt_link::node::Use_Service(std::string in_service_name, std::string in_Data,
 												}
 												std::cout << std::endl;
 											}
-											Notifications[0] = Received_Bytes; });
+											try
+											{
+												Notifications[0] = Received_Bytes;
+											}
+											catch (std::string err)
+											{
+												if (print_on)
+												{
+													std::cout << err << std::endl;
+												}
+											}});
 									}
 									catch (std::string err)
 									{
