@@ -250,68 +250,68 @@ bool CommandBlock::AddCommands(int tilt_steps, int pan_steps, int zoom_steps, do
 		case 1:
 			for (int it = 0; it < diagonal_steps; it++)
 			{
-				CommandStack.push_back({ UP_RIGHT, 0 });
+				CommandStack.push_back({ UP_RIGHT, 0, 0 });
 			}
 			for (int ii = 0; ii < straight_steps; ii++)
 			{
 				if (more_pan_steps)
 				{
-					CommandStack.push_back({ RIGHT, 0 });
+					CommandStack.push_back({ RIGHT, 0, 0 });
 				}
 				else
 				{
-					CommandStack.push_back({ UP, 0 });
+					CommandStack.push_back({ UP, 0, 0 });
 				}
 			}
 			break;
 		case 2:
 			for (int it = 0; it < diagonal_steps; it++)
 			{
-				CommandStack.push_back({ UP_LEFT, 0 });
+				CommandStack.push_back({ UP_LEFT, 0, 0 });
 			}
 			for (int ii = 0; ii < straight_steps; ii++)
 			{
 				if (more_pan_steps)
 				{
-					CommandStack.push_back({ LEFT, 0 });
+					CommandStack.push_back({ LEFT, 0, 0 });
 				}
 				else
 				{
-					CommandStack.push_back({ UP, 0 });
+					CommandStack.push_back({ UP, 0, 0 });
 				}
 			}
 			break;
 		case 3:
 			for (int it = 0; it < diagonal_steps; it++)
 			{
-				CommandStack.push_back({ DOWN_LEFT, 0 });
+				CommandStack.push_back({ DOWN_LEFT, 0, 0 });
 			}
 			for (int ii = 0; ii < straight_steps; ii++)
 			{
 				if (more_pan_steps)
 				{
-					CommandStack.push_back({ LEFT, 0 });
+					CommandStack.push_back({ LEFT, 0, 0 });
 				}
 				else
 				{
-					CommandStack.push_back({ DOWN, 0 });
+					CommandStack.push_back({ DOWN, 0, 0 });
 				}
 			}
 			break;
 		case 4:
 			for (int it = 0; it < diagonal_steps; it++)
 			{
-				CommandStack.push_back({ DOWN_RIGHT, 0 });
+				CommandStack.push_back({ DOWN_RIGHT, 0, 0 });
 			}
 			for (int ii = 0; ii < straight_steps; ii++)
 			{
 				if (more_pan_steps)
 				{
-					CommandStack.push_back({ RIGHT, 0 });
+					CommandStack.push_back({ RIGHT, 0, 0 });
 				}
 				else
 				{
-					CommandStack.push_back({ DOWN, 0 });
+					CommandStack.push_back({ DOWN, 0, 0 });
 				}
 			}
 			break;
@@ -321,19 +321,18 @@ bool CommandBlock::AddCommands(int tilt_steps, int pan_steps, int zoom_steps, do
 	}
 	else if (control_mode == "FUZZY")
 	{
-		CommandStack.push_back({ SET_SPEED_PAN, in_speed_pan });
-		CommandStack.push_back({ SET_SPEED_TILT, in_speed_tilt });
+		CommandStack.push_back({ SET_SPEED_PAN_TILT, in_speed_pan, in_speed_tilt });
 	}
 		
 	for (int it = 0; it < abs(zoom_steps); it++)
 	{
 		if (zoom_steps > 0)
 		{
-			CommandStack.push_back({ ZOOM_IN, 0 });
+			CommandStack.push_back({ ZOOM_IN, 0, 0 });
 		}
 		else
 		{
-			CommandStack.push_back({ ZOOM_OUT, 0 });
+			CommandStack.push_back({ ZOOM_OUT, 0, 0 });
 		}
 	}
 
@@ -341,6 +340,7 @@ bool CommandBlock::AddCommands(int tilt_steps, int pan_steps, int zoom_steps, do
 }
 bool CommandBlock::GeneratePath()
 {
+	std::vector<double> speed_ref;
 	double delta_tilt = ref_cam_state.tilt - last_cam_state.tilt;
 	double tilt_steps = delta_tilt / step_size_tilt;
 
@@ -353,10 +353,20 @@ bool CommandBlock::GeneratePath()
 
 	double speedrate_pan = Fuzzy_Control(delta_pan, Rules_Pan);
 	double speedrate_tilt = Fuzzy_Control(delta_tilt, Rules_Tilt);
-	std::vector<double> speed_ref = Update_SpeedRef(speedrate_pan, speedrate_tilt);
+	speed_ref = Update_SpeedRef(speedrate_pan, speedrate_tilt);
+	
+
 	if (speed_ref.empty())
 	{
 		return false;
+	}
+	if (delta_pan < step_size_pan)
+	{
+		speed_ref[0] = 0;
+	}
+	if (delta_tilt < step_size_tilt)
+	{
+		speed_ref[1] = 0;
 	}
 
 	return true && AddCommands(tilt_steps, pan_steps, 0, speed_ref[0], speed_ref[1]);

@@ -204,7 +204,7 @@ bool OutputBlock::SendPTZ(_cam_command command)
 
 	if (CAM)
 	{
-		switch (command)
+		switch (command.type)
 		{
 		case LEFT:
 			time = TimeWindow(CamConfig[assigned_cam_index].pan.step_size, CamConfig[assigned_cam_index].speed.fixed_value, CamConfig[assigned_cam_index].resolution);
@@ -288,6 +288,44 @@ bool OutputBlock::SendPTZ(_cam_command command)
 			CAM->ZoomStop();
 			count_zoom--;
 			break;
+		case SET_SPEED_PAN:
+			if (command.value_1 > 0)
+			{
+				CAM->CamRigth(180.0, command.value_1);
+			}
+			else
+			{
+				CAM->CamLeft(180.0, abs(command.value_1));
+			}
+			break;
+		case SET_SPEED_TILT:
+			if (command.value_1 > 0)
+			{
+				CAM->CamUp(180.0, command.value_1);
+			}
+			else
+			{
+				CAM->CamDown(180.0, abs(command.value_1));
+			}
+			break;
+		case SET_SPEED_PAN_TILT:
+			if (command.value_1 > 0 && command.value_2 > 0)
+			{
+				CAM->CamUpRight(180, command.value_1, 180, command.value_2);
+			}
+			else if (command.value_1 > 0 && command.value_2 < 0)
+			{
+				CAM->CamDownRight(180, command.value_1, 180, abs(command.value_2));
+			}
+			else if (command.value_1 < 0 && command.value_2 > 0)
+			{
+				CAM->CamUpLeft(180, abs(command.value_1), 180, command.value_2);
+			}
+			else
+			{
+				CAM->CamUpLeft(180, abs(command.value_1), 180, abs(command.value_2));
+			}
+			break;			
 		default:
 			break;
 		}

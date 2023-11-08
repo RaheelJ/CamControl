@@ -22,7 +22,7 @@ int main_cam()
 	}
 
 	CamHandler.Assign_Camera("cam_2");
-	while (1)
+	/*while (1)
 	{
 		user_input = _getch();
 		if (user_input == 'w')
@@ -49,7 +49,7 @@ int main_cam()
 		{
 			std::cout << "Invalid Command !" << std::endl;
 		}
-	}
+	}*/
 
 	return 0;
 }

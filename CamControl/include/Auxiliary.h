@@ -93,12 +93,14 @@ enum _cam_command_type
 	ZOOM_IN,
 	ZOOM_OUT,
 	SET_SPEED_PAN,
-	SET_SPEED_TILT
+	SET_SPEED_TILT,
+	SET_SPEED_PAN_TILT
 };
 struct _cam_command
 {
 	_cam_command_type type;
-	double value = 0;
+	double value_1 = 0;
+	double value_2 = 0;
 };
 
 struct _geo_point
