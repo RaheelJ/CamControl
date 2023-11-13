@@ -15,13 +15,13 @@
         </Weights>
         <RegionOfInterest>
             <name>roi_1</name>
-            <id>1</id>
+            <id>-1</id>
             <region_priority>0.5</region_priority>
             <Point Latitude="68.5265716" Longitude="-71.5174212" Altitude="0" />
         </RegionOfInterest>
         <RegionOfInterest>
             <name>roi_2</name>
-            <id>3</id>
+            <id>-2</id>
             <region_priority>0.5</region_priority>
             <Point Latitude="76.4172465" Longitude="-40.7627527" Altitude="0" />
         </RegionOfInterest>

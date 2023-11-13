@@ -371,6 +371,10 @@ bool CommandBlock::GeneratePath()
 
 	return true && AddCommands(tilt_steps, pan_steps, 0, speed_ref[0], speed_ref[1]);
 }
-
+bool CommandBlock::Get_CommandStack(std::vector<_cam_command> out_CommandStack)
+{
+	out_CommandStack = CommandStack;
+	return true;
+}
 	
 

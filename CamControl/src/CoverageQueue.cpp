@@ -40,29 +40,23 @@ bool CoverageBlock::Initialize(const std::string& config_file, std::string& mess
 	if (region_priority_method == "user_defined")
 	{
 		region_share = ReadParam(std::stod(CoverageNode.child_value("region_share")), 0, 100, error);
+		region_share = region_share / 100;
 	}
 	/* Initialize parameters from "RegionOfInterest" node */
-	int i = 0;
 	_region_interest temp_region{ 0 };
 	pugi::xml_node temp_node, point;
-	for (point = CoverageNode.first_child(); point; point = point.next_sibling())
+	for (point = CoverageNode.child("RegionOfInterest"); point; point = point.next_sibling("RegionOfInterest"))
 	{
-		if (i <= 1)
-		{
-			i++;
-			continue;
-		}
 		if (region_priority_method == "user_defined")
 		{
 			temp_region.priority = ReadParam(std::stod(point.child_value("region_priority")), 0, 1, error);
 		}
-		temp_region.ID = ReadParam(std::stoi(point.child_value("ID")), -9999, -1, error);
+		temp_region.ID = ReadParam(std::stoi(point.child_value("id")), -9999, -1, error);
 		temp_node = point.child("Point");
 		temp_region.pointA.alt = ReadParam(temp_node.attribute("Altitude").as_double(), 0, 8e6, error);
 		temp_region.pointA.lat = ReadParam(temp_node.attribute("Latitude").as_double(), -90, 90, error);
 		temp_region.pointA.lon = ReadParam(temp_node.attribute("Longitude").as_double(), -180, 180, error);
 		RegionsOfInterest.push_back(temp_region);
-		i++;
 	}
 
 	/* Check for out of range parameters */
@@ -323,10 +317,13 @@ bool CoverageBlock::ModifyQueue(const _queue_element& element, int operation)
 		break;
 	case 0:
 		PriorityQueue[index].last_stoppage_criteria = 0;
+		break;
 	case 1:
 		PriorityQueue[index].last_stoppage_criteria = 1;
+		break;
 	case 2:
 		PriorityQueue[index].last_stoppage_criteria = 2;
+		break;
 	default:
 		break;
 	}

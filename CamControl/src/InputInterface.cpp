@@ -14,7 +14,7 @@ bool InputBlock::Reinitialize()
 	return true;
 }
 
-bool InputBlock::AddTargets(const std::vector<_target>& NewTargets)
+bool InputBlock::AddTargets(const std::vector<_target>& NewTargets, double in_time)
 {
 	bool found = false;
 
@@ -39,12 +39,12 @@ bool InputBlock::AddTargets(const std::vector<_target>& NewTargets)
 
 	return true;
 }
-bool InputBlock::UpdateAssets(const std::vector<_asset>& NewAssets, const double time)
+bool InputBlock::UpdateAssets(const std::vector<_asset>& NewAssets, double in_time)
 {
 	bool found = false;
 
 	t_prev = t;
-	t = time;
+	t = in_time;
 	AssetsPrev = Assets;
 	for (const auto& i : NewAssets)
 	{

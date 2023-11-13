@@ -6,10 +6,10 @@ struct _asset
 {
 	double time;
 	std::string ID;
-	bool in_geo;
-	double lon_x, lat_y, alt_z;
-	double speed_x, speed_y, speed_z;
-	double yaw, pitch, roll;			//Asset Orientation
+	bool in_geo = true;
+	double lon_x{ 0 }, lat_y{ 0 }, alt_z{ 0 };
+	double speed_x{ 0 }, speed_y{ 0 }, speed_z{ 0 };
+	double yaw{ 0 }, pitch{ 0 }, roll{ 0 };			//Asset Orientation
 };
 struct _cam_state
 {
@@ -110,7 +110,7 @@ struct _geo_point
 };
 struct _position
 {
-	bool in_geo;							//1=Geographical Coordinates, 0=Local/Cartesian Coordiantes
+	bool in_geo = true;						//1=Geographical Coordinates, 0=Local/Cartesian Coordiantes
 	double lat_y, lon_x, alt_z;				//unit: degrees and meters
 	double std_lat_y, std_lon_x, std_alt_z;	//standard deviations
 };
@@ -135,7 +135,7 @@ struct _target_threat
 };
 struct _target_type
 {
-	std::string category;		//target category
+	_target_category category;	//target category
 	double size;				//target size 
 };
 struct _target

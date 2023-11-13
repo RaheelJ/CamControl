@@ -24,7 +24,7 @@ class CommandBlock
 	std::string scan_type = "HELIX";
 	double step_size_pan = 0.05;
 	double step_size_tilt = 0.05;
-	double step_size_zoom = 0.08;
+	double step_size_zoom = 1.0;
 	bool continuous_pan = "TRUE";
 	double span_pan = 360;
 	double span_tilt = 180;
@@ -51,16 +51,17 @@ class CommandBlock
 	double max_speed_rate{ 80 };
 	double Fuzzy_Control(double in_error, std::vector<_rule_fuzzy> in_Rules);
 	std::vector<double> Update_SpeedRef(double in_speedrate_pan, double in_speedrate_tilt);
+	bool AddCommands(int tilt_steps, int pan_steps, int zoom_steps, double in_speed_pan, double in_speed_tilt);
+	bool ChangeZoom(int zoom_steps);
+	bool GenerateScanPath(_cam_state);
 
+public:
 	bool Initialize(const std::string config_file, std::string& message);
 	bool Reinitialize();
-
-	bool ChangeZoom(int zoom_steps);
-	bool GeneratePath();
-	bool GenerateScanPath(_cam_state);
-	bool AddCommands(int tilt_steps, int pan_steps, int zoom_steps, double in_speed_pan, double in_speed_tilt);
-
 	bool CalcRefState(_asset, _cam_state, _target);
 	bool CalcRefState(_asset, _cam_state, _region_interest);
+	bool GeneratePath();
+	bool Get_CommandStack(std::vector<_cam_command> out_CommandStack);
+	
 };
 
