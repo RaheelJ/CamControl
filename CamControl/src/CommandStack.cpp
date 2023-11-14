@@ -11,12 +11,18 @@
 
 bool CommandBlock::Initialize(const std::string config_file, std::string& message)
 {
+	output_block.Initialize(config_file, message);
 	return true;
 }
 bool CommandBlock::Reinitialize()
 {
 	CommandStack.clear();
+	output_block.Reinitialize();
 	return true;
+}
+bool CommandBlock::Assign_Camera(std::string cam_ID)
+{
+	return output_block.Assign_Camera(cam_ID);
 }
 
 bool CommandBlock::Parse_Rules(std::vector<std::string> in_Rules_String, std::vector<_rule_fuzzy>& out_Rules)
@@ -157,6 +163,7 @@ bool CommandBlock::ChangeZoom(int zoom_steps)
 }
 bool CommandBlock::GenerateScanPath(_cam_state cam_state)
 {
+
 	return true;
 }
 
@@ -371,9 +378,14 @@ bool CommandBlock::GeneratePath()
 
 	return true && AddCommands(tilt_steps, pan_steps, 0, speed_ref[0], speed_ref[1]);
 }
-bool CommandBlock::Get_CommandStack(std::vector<_cam_command> out_CommandStack)
+bool CommandBlock::FollowPath()
 {
-	out_CommandStack = CommandStack;
+	for (int i=0; i<CommandStack.size(); i++)
+	{
+		output_block.SendPTZ(CommandStack[i]);
+		CommandStack.erase(CommandStack.begin() + i);
+		i--;
+	}
 	return true;
 }
 	

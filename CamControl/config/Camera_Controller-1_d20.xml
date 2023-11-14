@@ -3,7 +3,13 @@
     <path_type>relative_to_self</path_type>
     <Name>Camera Controller-1</Name>
     <method>prioritize</method>
+    <ExecutionControl>
+        <enable_multithreading>false</enable_multithreading>
+        <sensor_period>10.0</sensor_period>
+        <camera_period>10.0</camera_period>
+    </ExecutionControl>
     <CoverageQueue>
+        <scan_time>10</scan_time>
         <region_priority_method>user_defined</region_priority_method>
         <region_share>4</region_share>
         <Weights>
@@ -15,13 +21,13 @@
         </Weights>
         <RegionOfInterest>
             <name>roi_1</name>
-            <id>-1</id>
+            <id>1</id>
             <region_priority>0.5</region_priority>
             <Point Latitude="68.5265716" Longitude="-71.5174212" Altitude="0" />
         </RegionOfInterest>
         <RegionOfInterest>
             <name>roi_2</name>
-            <id>-2</id>
+            <id>3</id>
             <region_priority>0.5</region_priority>
             <Point Latitude="76.4172465" Longitude="-40.7627527" Altitude="0" />
         </RegionOfInterest>
@@ -35,6 +41,12 @@
         <asset_name>asset_2</asset_name>
         <asset_position lat="72.9210238" lon="-120.6370204" alt="0" />
         <asset_stationary>false</asset_stationary>
+        <Serial_GPS>
+            <commport_name_gps>COM2</commport_name_gps>
+            <timeout_gps>100</timeout_gps>
+            <baudrate_gps>4800</baudrate_gps>
+            <buffer_size>100</buffer_size>
+        </Serial_GPS>
     </Assets>
     <CameraManager>
         <cam_name>cam_1</cam_name>
@@ -43,11 +55,10 @@
         <cam_offset_y>2.0</cam_offset_y>
         <CameraSpecifications>
             <cam_type>optical</cam_type>
-            <gps_available>false</gps_available>
-            <pos_available>false</pos_available>
             <aspect_ratio>1920, 1080</aspect_ratio>
             <max_zoom_digital>12</max_zoom_digital>
             <night_vision>false</night_vision>
+            <pos_available>false</pos_available>
             <optical_zoom>true</optical_zoom>
             <OpticalZoom>
                 <max_zoom>30</max_zoom>
@@ -89,14 +100,24 @@
         <Controller>
             <con_loop>CASCADED</con_loop>
             <con_type>FUZZY</con_type>
-            <num_rules_pan>1</num_rules_pan>
-            <rules_pan>angle error,&gt;=,6,100;angle error,&lt;,6,-100</rules_pan>
-            <num_rules_tilt>1</num_rules_tilt>
-            <rules_tilt>angle error,&gt;=,6,100;angle error,&lt;,6,-100</rules_tilt>
+            <num_rules_pan>2</num_rules_pan>
+            <rules_pan>ang_err,LESSER,6,-100;ang_err,LESSER,6,-100</rules_pan>
+            <num_rules_tilt>2</num_rules_tilt>
+            <rules_tilt>ang_err,LESSER,6,-100;ang_err,LESSER,6,-100</rules_tilt>
             <out_limit>100</out_limit>
             <saturation_upper>100</saturation_upper>
             <saturation_lower>4</saturation_lower>
         </Controller>
+        <Scan_Sequence>
+            <enable_scan>true</enable_scan>
+            <scan_only_cam>false</scan_only_cam>
+            <Scan_Area>
+                <min_pan_scan>-180</min_pan_scan>
+                <max_pan_scan>180</max_pan_scan>
+                <min_tilt_scan>0</min_tilt_scan>
+                <max_tilt_scan>90</max_tilt_scan>
+            </Scan_Area>
+        </Scan_Sequence>
         <CommSettings>
             <comm_protocol>PELCO_D_TCP</comm_protocol>
             <extended_instructions>true</extended_instructions>
@@ -109,10 +130,9 @@
             </NetworkSettings>
         </CommSettings>
         <ExternalSensors>
-            <enable_external_feedback>true</enable_external_feedback>
+            <connected_imu>bt_imu</connected_imu>
             <BT_IMU>
                 <Adapter_Config>
-                    <scan_time>8000.0</scan_time>
                     <max_nodes>1</max_nodes>
                 </Adapter_Config>
                 <Peripheral_Config>
@@ -124,106 +144,6 @@
                     <op_type>NOTIFY</op_type>
                 </Peripheral_Config>
             </BT_IMU>
-            <Serial_GPS>
-                <commport_name_gps>COM2</commport_name_gps>
-                <timeout_gps>100</timeout_gps>
-                <baudrate_gps>4800</baudrate_gps>
-                <buffer_size>100</buffer_size>
-            </Serial_GPS>
-        </ExternalSensors>
-    </CameraManager>
-    <CameraManager>
-        <cam_name>cam_2</cam_name>
-        <asset>asset_2</asset>
-        <cam_offset_x>2.0</cam_offset_x>
-        <cam_offset_y>2.0</cam_offset_y>
-        <CameraSpecifications>
-            <cam_type>optical</cam_type>
-            <gps_available>false</gps_available>
-            <pos_available>false</pos_available>
-            <aspect_ratio>1920, 1080</aspect_ratio>
-            <max_zoom_digital>12</max_zoom_digital>
-            <night_vision>false</night_vision>
-            <optical_zoom>true</optical_zoom>
-            <OpticalZoom>
-                <max_zoom>30</max_zoom>
-                <zoom_speed>Slow</zoom_speed>
-                <zoom_step>0.02</zoom_step>
-                <FOV_horizontal_max>63.7</FOV_horizontal_max>
-                <FOV_horizontal_min>2.1</FOV_horizontal_min>
-            </OpticalZoom>
-        </CameraSpecifications>
-        <InitialState>
-            <height>0.5</height>
-            <FOV_horizontal>60.0</FOV_horizontal>
-            <pan>0.0</pan>
-            <tilt>0.0</tilt>
-            <zoom>0.0</zoom>
-            <Reference>
-                <azimuth>0.0</azimuth>
-                <elevation>0.0</elevation>
-            </Reference>
-        </InitialState>
-        <PTZsettings>
-            <resolution>0.05</resolution>
-            <Pan>
-                <continuous_pan>true</continuous_pan>
-                <step_size_pan>0.05</step_size_pan>
-                <span_pan>360.0</span_pan>
-            </Pan>
-            <Tilt>
-                <continuous_tilt>true</continuous_tilt>
-                <step_size_tilt>0.05</step_size_tilt>
-                <span_tilt>350.0</span_tilt>
-            </Tilt>
-            <Speed>
-                <max_speed>120.0</max_speed>
-                <speed_control>adaptive</speed_control>
-            </Speed>
-        </PTZsettings>
-        <Controller>
-            <con_loop>CASCADED</con_loop>
-            <con_type>FUZZY</con_type>
-            <num_rules_pan>2</num_rules_pan>
-            <rules_pan>ang_error,&lt;,6,-100;ang_error,&lt;,6,-100</rules_pan>
-            <num_rules_tilt>2</num_rules_tilt>
-            <rules_tilt>ang_error,&lt;,6,-100;ang_error,&lt;,6,-100</rules_tilt>
-            <out_limit>100</out_limit>
-            <saturation_upper>100</saturation_upper>
-            <saturation_lower>4</saturation_lower>
-        </Controller>
-        <CommSettings>
-            <comm_protocol>ONVIF</comm_protocol>
-            <comm_profile>profile_T</comm_profile>
-            <NetworkSettings>
-                <username>admin</username>
-                <password>admin</password>
-                <IP>127.000.000.001</IP>
-                <port>200</port>
-            </NetworkSettings>
-        </CommSettings>
-        <ExternalSensors>
-            <enable_external_feedback>true</enable_external_feedback>
-            <BT_IMU>
-                <Adapter_Config>
-                    <scan_time>8000.0</scan_time>
-                    <max_nodes>1</max_nodes>
-                </Adapter_Config>
-                <Peripheral_Config>
-                    <peripheral_ssid>WT901BLE68</peripheral_ssid>
-                    <mac_address>db:f6:61:f1:0e:d3</mac_address>
-                    <service_name>notify_9_axis</service_name>
-                    <service_uuid>0000ffe5-0000-1000-8000-00805f9a34fb</service_uuid>
-                    <ch_uuid>0000ffe4-0000-1000-8000-00805f9a34fb</ch_uuid>
-                    <op_type>NOTIFY</op_type>
-                </Peripheral_Config>
-            </BT_IMU>
-            <Serial_GPS>
-                <commport_name_gps>COM2</commport_name_gps>
-                <timeout_gps>100</timeout_gps>
-                <baudrate_gps>4800</baudrate_gps>
-                <buffer_size>100</buffer_size>
-            </Serial_GPS>
         </ExternalSensors>
     </CameraManager>
 </CamControl>

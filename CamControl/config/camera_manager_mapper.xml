@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<CamControl	DefaultFileTag="CamControl">
+	<Attribute 	Value="project" 		Name="Default_File"/>
+	<Attribute 	Value="FromConfig" 			Name="Default_File_Type"/>
+	<Attribute 	Value="20151101" 			Name="version"/>
+	<Node 		Value="relative_to_self" 	Name="path_type"/>
+	
+	<Node	Name="Name"			CopyControl="Name"/>
+	<Node	Name="method"		CopyControl="method"/>
+	
+	<CopyNode	Group_Name="ExecutionControl"/>
+	<CopyNode	Group_Name="CoverageQueue"/>
+	<CopyNode	Group_Name="Assets"/>
+	<CopyNode	Group_Name="CameraManager"/>
+	
+</CamControl>

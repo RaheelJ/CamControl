@@ -1,8 +1,0 @@
-- Assumptions:
-	1. Camera motion is in steps, pan and tilt step size are equal (for better diagonal movements)
-	2. Need a better strategy for zoom in/out. Currently, a single step per call
-	3. x and y camera offset from asset position not taken into consideration
-	4. Both asset and target states are in geo-coordinates
-	5. Fixed span considered for PTZ
-	6. 
- 

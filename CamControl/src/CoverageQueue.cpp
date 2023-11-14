@@ -70,6 +70,7 @@ bool CoverageBlock::Initialize(const std::string& config_file, std::string& mess
 	}
 
 	PriorityQueue.clear();
+	UpdateQueue();
 	return true;
 }
 bool CoverageBlock::Reinitialize()
@@ -78,6 +79,18 @@ bool CoverageBlock::Reinitialize()
 	return true;
 }
 
+void CoverageBlock::SetMode(std::string in_Mode)
+{
+	if (in_Mode == "SCAN")
+	{
+		operation_mode = 0;
+	}
+	else 
+	{
+		//Tracking Mode
+		operation_mode = 1;
+	}
+}
 bool CoverageBlock::NormalizeQueue()
 {
 	double total_priority{ 0 };
@@ -147,11 +160,25 @@ bool CoverageBlock::NormalizeRegions(const double sum_priority)
 
 bool CoverageBlock::GetQueue(std::vector<_queue_element>& xo_PriorityQueue)
 {
+	if (operation_mode = 0)
+	{
+		xo_PriorityQueue.clear();
+		return true;
+	}
 	xo_PriorityQueue = PriorityQueue;
 	return true;
 }
 bool CoverageBlock::PopQueue(_queue_element& QElement)
 {
+	if (operation_mode == 0)
+	{
+		QElement.ID = -99;			//ID for camera scan
+	}
+	else if (current_time >= scan_time)
+	{
+		QElement.ID = -99;			//ID for camera scan
+	}
+
 	double temp_priority{ 0 };
 	int pop_index{ -1 };
 	double rand_num = RandNum(0.0, 1.0);
@@ -172,8 +199,17 @@ bool CoverageBlock::PopQueue(_queue_element& QElement)
 	return true;
 }
 
-bool CoverageBlock::UpdateQueue(const std::vector<_target>& Targets)
+bool CoverageBlock::UpdateQueue(const std::vector<_target>& Targets, double in_time)
 {
+	if (in_time > current_time)
+	{
+		current_time = in_time;
+	}
+	if (operation_mode == 0)
+	{
+		return true;
+	}
+
 	bool found = false;
 	_queue_element temp_element{ 0 };
 

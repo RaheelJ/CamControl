@@ -155,7 +155,7 @@ int main()
 	std::vector<_queue_element> out_Queue_CB1;
 
 	status_CB1 = CB1.Initialize(config_CB1, message_CB1);
-	CB1.UpdateQueue(in_Targets_CB1);
+	CB1.UpdateQueue(in_Targets_CB1, 1.0);
 	CB1.GetQueue(out_Queue_CB1);
 	CB1.PopQueue(out_Q1_CB1);
 	CB1.PopQueue(out_Q1_CB1);

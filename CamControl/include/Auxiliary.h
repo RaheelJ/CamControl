@@ -150,11 +150,11 @@ struct _target
 
 struct _queue_element
 {
-	double priority, Npriority;		//Normalized and not normalized priority				
+	double priority, Npriority;			//Normalized and not normalized priority				
 	int ID;							
-	int count;						//number of times the element has been covered 
-	int last_stoppage_criteria;		//criteria that stopped the coverage
-	double last_coverage_time;		//time at which the element was covered most recently
+	int count{ 0 };						//number of times the element has been covered 
+	int last_stoppage_criteria{ 0 };	//criteria that stopped the coverage
+	double last_coverage_time{ -1 };	//time at which the element was covered most recently
 };
 struct _priority_weights
 {

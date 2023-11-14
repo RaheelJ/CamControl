@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Auxiliary.h>
+#include <NetworkedOutput.h>
 #include <map>
 
 // The code currently assumes zero (x, y) offset from the camera position
@@ -12,6 +13,7 @@
 class CommandBlock
 {
 	bool print_out = true;
+	OutputBlock output_block;
 
 	//Current state of camera driving mechanisms
 	_cam_state last_cam_state, ref_cam_state;
@@ -58,10 +60,10 @@ class CommandBlock
 public:
 	bool Initialize(const std::string config_file, std::string& message);
 	bool Reinitialize();
+	bool Assign_Camera(std::string cam_ID);
 	bool CalcRefState(_asset, _cam_state, _target);
 	bool CalcRefState(_asset, _cam_state, _region_interest);
 	bool GeneratePath();
-	bool Get_CommandStack(std::vector<_cam_command> out_CommandStack);
-	
+	bool FollowPath();
 };
 

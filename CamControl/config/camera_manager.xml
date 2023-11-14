@@ -1,0 +1,701 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Configuration	File_Type="Default"		Top_Node="CamControl"	Path_Type="RelativeToApplication"	Item_Name_Control="Name">
+	<Control	Name="Name"		Type="TextBox"			Format="text"/>
+	<Control	Name="method"	Display_Name="Method"	Output_Name="method"	Type="Choice">
+		<!-- <Object		Output_Name="scanning"				Name="Scan Control"/>
+		<Object		Output_Name="manual"				Name="Manual Control"/> -->
+		<Object		Output_Name="prioritize"		Name="Search and Track"		Object_Value="1"/>
+		<Object		Output_Name="scan_only"			Name="Scan Only">
+			<Restrictions>
+				<To>
+					<Group 	Name="CoverageQueue"/>
+				</To>
+				<Hide>1</Hide>
+				<IgnoreValidate>1</IgnoreValidate>
+				<DoNotWrite>1</DoNotWrite>
+			</Restrictions>
+		</Object>
+	</Control>
+	
+	<GroupStatic	Name="ExecutionControl"	Display_Name="Execution Control"	Output_Name="ExecutionControl"		Collapsible="1">
+		<Control	Name="enable_multithreading"	Display_Name="Enable Multi-Threading"	Output_Name="enable_multithreading"	Type="CheckBox">
+			<Object		Name="true"/>
+			<Object		Name="false"		Object_Value="1">
+				<Restrictions>
+					<To>
+						<Control	Name="sensor_threads"/>
+						<Control	Name="camera_threads"/>
+					</To>
+					<Hide>1</Hide>
+					<IgnoreValidate>1</IgnoreValidate>
+					<DoNotWrite>1</DoNotWrite>					
+				</Restrictions>
+			</Object>
+		</Control>
+		<Control	Name="sensor_threads"			Display_Name="Sensor Thread"			Output_Name="sensor_threads"		Type="SpinBox"		Min="1">
+			<Object		Object_Value="1"/>
+		</Control>
+		<Control	Name="camera_threads"			Display_Name="Camera Thread"			Output_Name="camera_threads"		Type="SpinBox"		Min="1">
+			<Object		Object_Value="1"/>
+		</Control>
+		<Control	Name="sensor_period"			Display_Name="Sensor Sampling Period"	Output_Name="sensor_period"			Type="TextBox"		Format="num"	Suffix="ms">
+			<Object		Object_Value="10.0"/>
+			<Restrictions>
+				<Min>10.0</Min>
+			</Restrictions>
+		</Control>
+		<Control	Name="camera_period"			Display_Name="Camera Sampling Period"	Output_Name="camera_period"			Type="TextBox"		Format="num"	Suffix="ms">
+			<Object		Object_Value="10.0"/>
+			<Restrictions>
+				<Min>10.0</Min>
+			</Restrictions>
+		</Control>
+	</GroupStatic>
+	
+	<GroupStatic	Name="CoverageQueue"	Display_Name="Coverage Queue"	Output_Name="CoverageQueue"		Collapsible="1">
+		<Control	Name="scan_time"				Display_Name="Periodic Scan Time"			Output_Name="scan_time"					Type="TextBox"		Format="num"	Suffix="s">
+			<Object		Object_Value="10"/>
+			<Restrictions>
+				<Min>0.0</Min>
+				<Max>100.0</Max>
+			</Restrictions>
+		</Control>	
+		<Control	Name="region_priority_method"	Display_Name="Region Priority Calculation"	Output_Name="region_priority_method"	Type="Choice">		
+			<Object		Output_Name="average"				Name="Average">
+				<Restrictions>
+					<To>
+						<Control Name="region_priority"/>
+						<Control Name="region_share"/>
+					</To>
+					<Hide>1</Hide>
+					<IgnoreValidate>1</IgnoreValidate>
+					<DoNotWrite>1</DoNotWrite>
+				</Restrictions>
+			</Object>
+			<Object		Output_Name="user_defined"			Name="User-Defined"		Object_Value="1"/>
+		</Control>
+		<Control	Name="region_share"				Display_Name="Region Probing Frequency"		Output_Name="region_share"				Type="TextBox"		Format="num"	Suffix="%">
+			<Object		Object_Value="0.5"/>
+			<Restrictions>
+				<Min>0.0</Min>
+				<Max>100.0</Max>
+			</Restrictions>
+		</Control>
+		<GroupStatic	Name="Weights"			Display_Name="Priority Calculation"	Output_Name="Weights"		Collapsible="1">
+			<Control	Name="W_threat"		Display_Name="Weight (Threat)"			Output_Name="W_threat"		Type="TextBox"	Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="W_std_deg"	Display_Name="Weight (Geo Position)"	Output_Name="W_std_deg"		Type="TextBox"	Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="W_std"		Display_Name="Weight (Altitude)"		Output_Name="W_std"			Type="TextBox"	Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="W_type"		Display_Name="Weight (Size)"			Output_Name="W_type"		Type="TextBox"	Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="W_detect"		Display_Name="Weight (Detection)"		Output_Name="W_detect"		Type="TextBox"	Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+		</GroupStatic>
+		<GroupListControl	Name="RegionOfInterest"	Display_Name="Regions Of Interest"	Output_Name="RegionOfInterest"	Collapsible="1"		Name_Control="name_2">
+			<Control	Name="name_2"			Display_Name="Name"		Output_Name="name"				Type="TextBox"		Format="text"/>
+			<Control	Name="id_2"				Display_Name="ID"		Output_Name="id"				Type="SpinBox">
+				<Object		Object_Value="1"/>
+				<Restrictions>
+					<Min>1</Min>
+				</Restrictions>
+			</Control>
+			<Control	Name="region_priority"	Display_Name="Priority"	Output_Name="region_priority"	Type="TextBox"		Format="num">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>1.0</Max>
+				</Restrictions>
+			</Control>
+			<Control 	Name="Point" 			Display_Name="Geographical Coordinates"			Output_Name="Point"			Type="MapPicker" 	Format="Point" 		SaveCoordinatesAs="attribute"/>
+		</GroupListControl>		
+	</GroupStatic>
+	
+	<GroupListControl	Name="Assets"	Display_Name="Asset Management"		Output_Name="Assets"		Collapsible="1"		Name_Control="asset_name">
+		<Control	Name="asset_name"			Display_Name="Name"					Output_Name="asset_name"			Type="TextBox"		Format="text"/>
+		<Control 	Name="asset_position" 		Display_Name="Initial Coordinates"	Output_Name="asset_position"		Type="MapPicker" 	Format="Point" 		SaveCoordinatesAs="attribute"		Coordinates="lat;lon;alt"/>
+		<Control	Name="asset_stationary"		Display_Name="Stationary Asset"		Output_Name="asset_stationary"		Type="CheckBox">
+			<Object		Name="true"			Object_Value="1">
+				<Restrictions>
+					<To>
+						<Group 	Name="Serial_GPS"/>
+					</To>
+					<Hide>1</Hide>
+					<IgnoreValidate>1</IgnoreValidate>
+					<DoNotWrite>1</DoNotWrite>
+				</Restrictions>
+			</Object>
+			<Object		Name="false"/>
+		</Control>
+		<GroupStatic	Name="Serial_GPS"	Display_Name="GPS Module"			Output_Name="Serial_GPS"		Collapsible="0">
+			<Control	Name="commport_name_gps"	Display_Name="Comm Port"	Output_Name="commport_name_gps"		Type="TextBox"	Format="text">
+				<Object		Object_Value="COM2"/>
+			</Control>
+			<Control	Name="timeout_gps"			Display_Name="Time Out"		Output_Name="timeout_gps"			Type="SpinBox"	Min="1"		Suffix="ms">
+				<Object		Object_Value="100"/>
+			</Control>
+			<Control	Name="baudrate_gps"			Display_Name="Baud Rate"	Output_Name="baudrate_gps"			Type="Choice"	Suffix="bps">
+				<Object		Name="2400"/>
+				<Object		Name="4800"		Object_Value="1"/>
+				<Object		Name="9600"/>
+				<Object		Name="19200"/>
+				<Object		Name="38400"/>
+				<Object		Name="57600"/>
+			</Control>
+			<Control	Name="buffer_size"			Display_Name="Buffer Size"	Output_Name="buffer_size"			Type="SpinBox"	Min="1"		Suffix="bytes">
+				<Object		Object_Value="100"/>
+			</Control>
+		</GroupStatic>
+	</GroupListControl>
+		
+	<GroupListControl	Name="CameraManager"	Display_Name="Camera Management"	Output_Name="CameraManager"		Collapsible="1"		Name_Control="cam_name">
+		<Control	Name="cam_name"			Display_Name="Name"							Output_Name="cam_name"		Type="TextBox"		Format="text"/>
+		<Control	Name="asset"			Display_Name="Asset"						Output_Name="asset"			Type="Choice">
+			<Restrictions>
+				<ImportGroupChoices Name="Assets">1</ImportGroupChoices>
+			</Restrictions>
+		</Control>
+		<Control	Name="cam_offset_x"		Display_Name="Camera Offset (Horizontal)"	Output_Name="cam_offset_x"	Type="TextBox"		Format="num"	Suffix="m">
+			<Object		Object_Value="2.0"/>
+		</Control>
+		<Control	Name="cam_offset_y"		Display_Name="Camera Offset (Vertical)"		Output_Name="cam_offset_y"	Type="TextBox"		Format="num"	Suffix="m">
+			<Object		Object_Value="2.0"/>
+		</Control>
+	
+		<GroupStatic	Name="CameraSpecifications"		Display_Name="Camera Specifications"	Output_Name="CameraSpecifications"		Collapsible="1">
+			<Control	Name="cam_type"			Display_Name="Type"						Output_Name="cam_type"			Type="Choice">
+				<Object		Output_Name="IR"				Name="Infrared"/>
+				<Object		Output_Name="laser"				Name="Laser"/>
+				<Object		Output_Name="optical"			Name="Optical"		Object_Value="1"/>
+			</Control>
+			<!-- <Control	Name="gps_available"	Display_Name="GPS Available"			Output_Name="gps_available"		Type="CheckBox">
+				<Object		Name="true"/>
+				<Object		Name="false"		Object_Value="1"/>
+			</Control> -->
+			<Control	Name="aspect_ratio"		Display_Name="Aspect Ratio"				Output_Name="aspect_ratio"		Type="FixedGrid" 	Format="int" 	Dimension="Column"		Column_Separator=",">
+				<Object		Object_Value="1920, 1080"/>
+				<Restrictions>
+					<Min>0.0</Min>
+				</Restrictions>
+			</Control>
+			<Control	Name="max_zoom_digital"	Display_Name="Max Digital Zoom"			Output_Name="max_zoom_digital"	Type="SpinBox"		Suffix="x">
+				<Object		Object_Value="12"/>
+				<Restrictions>
+					<Min>0</Min>
+				</Restrictions>
+			</Control>
+			<Control	Name="night_vision"		Display_Name="Night Vision Available"	Output_Name="night_vision"		Type="CheckBox">
+				<Object		Name="true"/>
+				<Object		Name="false"		Object_Value="1"/>
+			</Control>
+			<Control	Name="pos_available"	Display_Name="Positioner Available"		Output_Name="pos_available"		Type="CheckBox">
+				<Object		Name="true"/>
+				<Object		Name="false"			Object_Value="1"/>
+			</Control>
+			<Control	Name="optical_zoom"		Display_Name="Optical Zoom Available"	Output_Name="optical_zoom"		Type="CheckBox">
+				<Object		Name="true"			Object_Value="1"/>
+				<Object		Name="false">
+					<Restrictions>
+						<To>
+							<Group	Name="OpticalZoom"/>
+						</To>
+						<Hide>1</Hide>
+						<DoNotWrite>1</DoNotWrite>
+						<IgnoreValidate>1</IgnoreValidate>
+					</Restrictions>
+				</Object>
+			</Control>
+			<GroupStatic	Name="OpticalZoom"		Display_Name="Camera Specifications"	Output_Name="OpticalZoom"		Collapsible="0">
+				<Control	Name="max_zoom"				Display_Name="Max Zoom"					Output_Name="max_zoom"				Type="SpinBox"	Suffix="x">
+					<Object		Object_Value="30"/>
+					<Restrictions>
+						<Min>0</Min>
+					</Restrictions>
+				</Control>
+				<Control	Name="zoom_speed"			Display_Name="Zoom Speed"				Output_Name="zoom_speed"			Type="Choice">
+					<Object		Name="Slow"		Object_Value="1"/>
+					<Object		Name="Moderate"/>
+					<Object		Name="Fast"/>
+				</Control>
+				<Control	Name="zoom_step"			Display_Name="Time Step"				Output_Name="zoom_step"				Type="TextBox"	Format="num"	Suffix="sec">
+					<Object		Object_Value="0.02"/>
+					<Restrictions>
+						<Min>0.0001</Min>
+					</Restrictions>
+				</Control>
+				<Control	Name="FOV_horizontal_max"	Display_Name="Max FOV (Horizontal)"		Output_Name="FOV_horizontal_max"	Type="TextBox"	Format="num"	Suffix="deg">
+					<Object		Object_Value="63.7"/>
+					<Restrictions>
+						<Max>360.0</Max>
+					</Restrictions>
+					<Restrictions Control_Name="FOV_horizontal_min">
+						<Comparison>GREATER_THAN</Comparison>
+					</Restrictions>
+				</Control>
+				<Control	Name="FOV_horizontal_min"	Display_Name="Min FOV (Horizontal)"		Output_Name="FOV_horizontal_min"	Type="TextBox"	Format="num"	Suffix="deg">
+					<Object		Object_Value="2.1"/>
+					<Restrictions>
+						<Min>0.0</Min>
+						<Max>360.0</Max>
+					</Restrictions>
+				</Control>
+			</GroupStatic>
+		</GroupStatic>
+			
+		<GroupStatic	Name="InitialState"	Display_Name="Initial State"	Output_Name="InitialState"			Collapsible="1">
+			<Control	Name="height"			Display_Name="Height"			Output_Name="height"			Type="TextBox"		Format="num"	Suffix="m">
+				<Object		Object_Value="0.5"/>
+				<Restrictions>
+					<Min>0.0</Min>
+				</Restrictions>
+			</Control>
+			<Control	Name="FOV_horizontal"	Display_Name="FOV (Horizontal)"	Output_Name="FOV_horizontal"	Type="TextBox"		Format="num"	Suffix="deg">
+				<Object		Object_Value="60.0"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>360.0</Max>
+				</Restrictions>
+			</Control>			
+			<Control	Name="pan"				Display_Name="Pan"				Output_Name="pan"				Type="TextBox"		Format="num"	Suffix="deg">
+				<Object		Object_Value="0.0"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>360.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="tilt"				Display_Name="Tilt"				Output_Name="tilt"				Type="TextBox"		Format="num"	Suffix="deg">
+				<Object		Object_Value="0.0"/>
+				<Restrictions>
+					<Min>0.0</Min>
+					<Max>360.0</Max>
+				</Restrictions>
+			</Control>
+			<Control	Name="zoom"				Display_Name="Zoom"				Output_Name="zoom"				Type="SpinBox"		Suffix="x">
+				<Object		Object_Value="0.0"/>
+				<Restrictions>
+					<Min>0</Min>
+				</Restrictions>
+				<Restrictions Control_Name="max_zoom">
+					<Comparison>LESS_THAN</Comparison>
+				</Restrictions>
+			</Control>
+			<GroupStatic	Name="Reference"	Display_Name="Orientation Reference"	Output_Name="Reference"		Collapsible="0">
+				<Control	Name="azimuth"			Display_Name="Azimuth"		Output_Name="azimuth"		Type="TextBox"		Format="num"	Suffix="deg">
+					<Object		Object_Value="0.0"/>
+					<Restrictions>
+						<Min>-180.0</Min>
+						<Max>180.0</Max>
+					</Restrictions>
+				</Control>
+				<Control	Name="elevation"		Display_Name="Elevation"	Output_Name="elevation"		Type="TextBox"		Format="num"	Suffix="deg">
+					<Object		Object_Value="0.0"/>
+					<Restrictions>
+						<Min>-90.0</Min>
+						<Max>90.0</Max>
+					</Restrictions>
+				</Control>
+				<!-- <Control	Name="altitude"			Display_Name="Altitude"		Output_Name="altitude"		Type="TextBox"		Format="num"	Suffix="m">
+					<Object		Object_Value="0.0"/>
+					<Restrictions>
+						<Min>0.0</Min>
+						<Max>6380000.0</Max>
+					</Restrictions>
+				</Control>	 -->				
+			</GroupStatic>
+		</GroupStatic>
+			
+		<GroupStatic	Name="PTZsettings"	Display_Name="PTZ Configuration"	Output_Name="PTZsettings"		Collapsible="1">
+			<Control	Name="resolution"		Display_Name="Resolution"	Output_Name="resolution"	Type="TextBox"	Format="num"	Suffix="deg">
+				<Object		Object_Value="0.05"/>
+				<Restrictions>
+					<Min>0.000001</Min>
+				</Restrictions>
+			</Control>
+			<GroupStatic	Name="Pan"		Display_Name="Pan"		Output_Name="Pan"		Collapsible="0">
+				<Control	Name="continuous_pan"	Display_Name="Continuous Span"	Output_Name="continuous_pan"	Type="CheckBox">
+					<Object		Name="true"			Object_Value="1"/>
+					<Object		Name="false"/>
+				</Control>
+				<Control	Name="step_size_pan"	Display_Name="Step Size"		Output_Name="step_size_pan"		Type="TextBox"		Format="num"	Suffix="deg">
+					<Object		Object_Value="0.05"/>
+					<Restrictions Control_Name="resolution">
+						<Comparison>GREATER_THAN_EQUAL_TO</Comparison>
+					</Restrictions>
+				</Control>	
+				<Control	Name="span_pan"			Display_Name="Span"				Output_Name="span_pan"			Type="TextBox"		Format="num"	Suffix="deg">
+					<Object		Object_Value="360.0"/>
+					<Restrictions>
+						<Min>0.0</Min>
+						<Max>360.0</Max>
+						<Restrictions Control_Name="resolution">
+							<Comparison>GREATER_THAN</Comparison>
+						</Restrictions>
+						<Restrictions Control_Name="step_size_pan">
+							<Comparison>GREATER_THAN</Comparison>
+						</Restrictions>
+					</Restrictions>
+				</Control>
+			</GroupStatic>				
+			<GroupStatic	Name="Tilt"		Display_Name="Tilt"		Output_Name="Tilt"		Collapsible="0">
+				<Control	Name="continuous_tilt"	Display_Name="Continuous Span"	Output_Name="continuous_tilt"	Type="CheckBox">
+					<Object		Name="true"/>
+					<Object		Name="false"		Object_Value="1"/>
+				</Control>			
+				<Control	Name="step_size_tilt"	Display_Name="Step Size"		Output_Name="step_size_tilt"	Type="TextBox"	Format="num"	Suffix="deg">
+					<Object		Object_Value="0.05"/>
+					<Restrictions Control_Name="resolution">
+						<Comparison>GREATER_THAN_EQUAL_TO</Comparison>
+					</Restrictions>
+				</Control>
+				<Control	Name="span_tilt"		Display_Name="Span"				Output_Name="span_tilt"			Type="TextBox"	Format="num"	Suffix="deg">
+					<Object		Object_Value="350.0"/>
+					<Restrictions>
+						<Min>0.0</Min>
+						<Max>360.0</Max>
+						<Restrictions Control_Name="resolution">
+							<Comparison>GREATER_THAN</Comparison>
+						</Restrictions>
+						<Restrictions Control_Name="step_size_tilt">
+							<Comparison>GREATER_THAN</Comparison>
+						</Restrictions>
+					</Restrictions>
+				</Control>
+			</GroupStatic>
+			<GroupStatic	Name="Speed"	Display_Name="Speed"	Output_Name="Speed"		Collapsible="0">
+				<Control	Name="max_speed"		Display_Name="Max Speed"		Output_Name="max_speed"		Type="TextBox"	Format="num"	Suffix="deg/s">
+					<Object		Object_Value="120.0"/>
+					<Restrictions>
+						<Min>0</Min>
+					</Restrictions>
+					<Restrictions Control_Name="speed_resolution">
+						<Comparison>GREATER_THAN</Comparison>
+					</Restrictions>
+					<Restrictions Control_Name="fixed_speed">
+						<Comparison>GREATER_THAN</Comparison>
+					</Restrictions>
+				</Control>
+				<Control	Name="speed_control"	Display_Name="Speed Control"	Output_Name="speed_control"	Type="Choice">
+					<Object		Output_Name="fixed"				Name="Fixed"/>
+					<Object		Output_Name="adaptive"			Name="Adaptive"		Object_Value="1">
+						<Restrictions>
+							<To>
+								<Control	Name="fixed_speed"/>
+							</To>
+							<Hide>1</Hide>
+							<DoNotWrite>1</DoNotWrite>
+							<IgnoreValidate>1</IgnoreValidate>
+						</Restrictions>
+					</Object>
+				</Control>
+				<Control	Name="fixed_speed"		Display_Name="Fixed Speed"		Output_Name="fixed_speed"	Type="TextBox"	Format="num"	Suffix="deg/s">
+					<Object		Object_Value="60.0"/>
+					<Restrictions Control_Name="resolution">
+						<Comparison>GREATER_THAN_EQUAL_TO</Comparison>
+					</Restrictions>
+				</Control>
+			</GroupStatic>			
+		</GroupStatic>
+		
+		<GroupStatic	Name="Controller"	Display_Name="Controller Settings"	Output_Name="Controller"		Collapsible="1">
+			<Control	Name="con_loop"			Display_Name="Control Loop "		Output_Name="con_loop"			Type="Choice">
+				<Object		Output_Name="CASCADED"			Name="Position-Speed Cascaded"		Object_Value="1"/>
+				<!-- <Object		Output_Name="ABSOLUTE"			Name="Absolute Positioner"		Object_Value="1"/> -->
+			</Control>
+			<Control	Name="con_type"			Display_Name="Controller Type"		Output_Name="con_type"			Type="Choice">
+				<Object		Output_Name="FUZZY"			Name="Fuzzy Logic"		Object_Value="1"/>
+			</Control>
+			<Control	Name="num_rules_pan"	Display_Name="Total Rules (Pan)"	Output_Name="num_rules_pan"		Type="SpinBox"		Min="1">
+				<Object		Object_Value="1"/>
+				<Restrictions Control_Name="rules_pan">
+					<NumRows>this</NumRows>
+				</Restrictions>
+			</Control>
+			<Control 	Name="rules_pan" 		Display_Name="Rules (Pan)"			Output_Name="rules_pan"			Type="FixedGrid"	Format="string" 	Column_Separator=","
+						Title="error(deg);operator;ref(deg);rate(deg/s2)">
+				<Object		Object_Value="ang_error,GREATER_EQUAL,10,10"/>
+				<Restrictions>
+					<NumCols>4</NumCols>
+				</Restrictions>
+				<DisplayedHelp>Operators: GREATER_EQUAL, LESSER</DisplayedHelp>
+			</Control>
+			<Control	Name="num_rules_tilt"	Display_Name="Total Rules (Tilt)"	Output_Name="num_rules_tilt"	Type="SpinBox"		Min="1">
+				<Object		Object_Value="1"/>
+				<Restrictions Control_Name="rules_tilt">
+					<NumRows>this</NumRows>
+				</Restrictions>
+			</Control>
+			<Control 	Name="rules_tilt" 		Display_Name="Rules (Tilt)"			Output_Name="rules_tilt"		Type="FixedGrid"	Format="string" 	Column_Separator=","
+						Title="err(deg);operator;ref(deg);rate(deg/s2)">
+				<Object		Object_Value="ang_error,LESSER,10,10"/>
+				<Restrictions>
+					<NumCols>4</NumCols>
+				</Restrictions>
+				<DisplayedHelp>Operators: GREATER_EQUAL, LESSER</DisplayedHelp>
+			</Control>
+			<Control	Name="out_limit"			Display_Name="Speed Rate Limit"			Output_Name="out_limit"			Type="TextBox"	Format="num"	Suffix="deg/s2">
+				<Object		Object_Value="40"/>
+				<Restrictions>
+					<Min>0.00000</Min>
+				</Restrictions>
+			</Control>
+			<Control	Name="saturation_upper"		Display_Name="Speed Saturation (Upper)"	Output_Name="saturation_upper"	Type="TextBox"	Format="num"	Suffix="deg/s">
+				<Object		Object_Value="60"/>
+				<Restrictions>
+					<Min>0.00000</Min>
+				</Restrictions>
+				<Restrictions		Control="max_speed">
+					<Comparison>Less_Than</Comparison>
+				</Restrictions>
+			</Control>
+			<Control	Name="saturation_lower"		Display_Name="Speed Saturation (Lower)"	Output_Name="saturation_lower"	Type="TextBox"	Format="num"	Suffix="deg/s">
+				<Object		Object_Value="4"/>
+				<Restrictions		Control="saturation_upper">
+					<Comparison>Less_Than</Comparison>
+				</Restrictions>
+				<Restrictions>
+					<Min>0.00000</Min>
+				</Restrictions>
+			</Control>
+		</GroupStatic>
+		
+		<GroupStatic	Name="Scan_Sequence"	Display_Name="Scan Sequence"	Output_Name="Scan_Sequence"	Collapsible="1">
+			<Control	Name="enable_scan"		Display_Name="Enable Scan Mode"		Output_Name="enable_scan"	Type="CheckBox">
+				<Object		Name="true"/>
+				<Object		Name="false"		Object_Value="1">
+					<Restrictions>
+						<To>
+							<Group		Name="Scan_Area"/>
+							<Control 	Name="scan_only_cam"/>
+						</To>
+						<IgnoreValidate>1</IgnoreValidate>
+						<Hide>1</Hide>
+						<DoNotWrite>1</DoNotWrite>
+					</Restrictions>
+				</Object>			
+			</Control>
+			<Control	Name="scan_only_cam"	Display_Name="Scan Only Camera"		Output_Name="scan_only_cam"	Type="CheckBox">
+				<Object		Name="true"/>
+				<Object		Name="false"		Object_Value="1"/>
+			</Control>
+			<GroupStatic	Name="Scan_Area"	Display_Name="Scan Area"	Output_Name="Scan_Area"		Collapsible="0">
+				<Control	Name="min_pan_scan"		Display_Name="Min Pan"		Output_Name="min_pan_scan"	Type="TextBox"		Format="num"	Suffix="deg"/>
+				<Control	Name="max_pan_scan"		Display_Name="Max Pan"		Output_Name="max_pan_scan"	Type="TextBox"		Format="num"	Suffix="deg"/>	
+				<Control	Name="min_tilt_scan"	Display_Name="Min Tilt"		Output_Name="min_tilt_scan"	Type="TextBox"		Format="num"	Suffix="deg"/>
+				<Control	Name="max_tilt_scan"	Display_Name="Max Tilt"		Output_Name="max_tilt_scan"	Type="TextBox"		Format="num"	Suffix="deg"/>
+			</GroupStatic>
+		</GroupStatic>
+		
+		<GroupStatic 	Name="CommSettings"	Display_Name="Camera Connection"	Output_Name="CommSettings"		Collapsible="1">
+			<Control	Name="comm_protocol"			Display_Name="Communication Protocol"		Output_Name="comm_protocol"			Type="Choice">
+				<Object		Output_Name="ONVIF"				Name="ONVIF">
+					<Restrictions>
+						<To>
+							<Control	Name="extended_instructions"/>
+							<Control	Name="cam_address"/>
+							<Group 		Name="SerialSettings"/>
+						</To>
+						<Hide>1</Hide>
+						<DoNotWrite>1</DoNotWrite>
+						<IgnoreValidate>1</IgnoreValidate>
+					</Restrictions>
+				</Object>
+				<Object		Output_Name="PELCO_D"			Name="Pelco-D (RS232)"		Object_Value="1">
+					<Restrictions>
+						<To>
+							<Control	Name="comm_profile"/>
+							<Group 		Name="NetworkSettings"/>
+						</To>
+						<Hide>1</Hide>
+						<DoNotWrite>1</DoNotWrite>
+						<IgnoreValidate>1</IgnoreValidate>
+					</Restrictions>
+				</Object>
+				<Object		Output_Name="PELCO_D_TCP"		Name="Pelco-D (Network)">
+					<Restrictions>
+						<To>
+							<Control	Name="comm_profile"/>
+							<Group		Name="SerialSettings"/>
+						</To>
+						<Hide>1</Hide>
+						<DoNotWrite>1</DoNotWrite>
+						<IgnoreValidate>1</IgnoreValidate>
+					</Restrictions>
+				</Object>
+			</Control>
+			<Control	Name="extended_instructions"	Display_Name="Use Extended Instructions"	Output_Name="extended_instructions"	Type="CheckBox">
+				<Object		Name="true"			Object_Value="1"/>
+				<Object		Name="false"/>
+			</Control>
+			<Control	Name="cam_address"				Display_Name="Camera Address"				Output_Name="cam_address"			Type="SpinBox"		Min="0">
+				<Object		Object_Value="1"/>
+			</Control>
+			<Control	Name="comm_profile"				Display_Name="Communication Profile"		Output_Name="comm_profile"			Type="Choice">
+				<Object		Output_Name="profile_S"			Name="Profile S"/>
+				<Object		Output_Name="profile_T"			Name="Profile T"		Object_Value="1"/>
+			</Control>
+			<GroupStatic	Name="NetworkSettings"	Display_Name="Network Parameters"	Output_Name="NetworkSettings"		Collapsible="0">
+				<Control	Name="username"	Display_Name="Username"		Output_Name="username"	Type="TextBox"	Format="text">
+					<Object		Object_Value="admin"/>
+				</Control>
+				<Control	Name="password"	Display_Name="Password"		Output_Name="password"	Type="TextBox"	Format="password">
+					<Object		Object_Value="admin"/>
+				</Control>
+				<Control	Name="IP"		Display_Name="IP Address"	Output_Name="IP"		Type="TextBox"	Format="ip">
+					<Object		Object_Value="127.000.000.001"/>
+				</Control>
+				<Control	Name="port"		Display_Name="Port Number"	Output_Name="port"		Type="SpinBox"	Min="0">
+					<Object		Object_Value="200"/>
+				</Control>
+			</GroupStatic>
+			<GroupStatic	Name="SerialSettings"	Display_Name="RS232 Parameters"		Output_Name="SerialSettings"		Collapsible="0">
+				<Control	Name="commport_name"	Display_Name="Comm Port"	Output_Name="commport_name"	Type="TextBox"	Format="text">
+					<Object		Object_Value="COM1"/>
+				</Control>
+				<Control	Name="timeout"			Display_Name="Time Out"		Output_Name="timeout"		Type="SpinBox"	Min="1"		Suffix="ms">
+					<Object		Object_Value="100"/>
+				</Control>
+				<Control	Name="baudrate"			Display_Name="Baud Rate"	Output_Name="baudrate"		Type="Choice"	Suffix="bps">
+					<Object		Name="2400"/>
+					<Object		Name="4800"		Object_Value="1"/>
+					<Object		Name="9600"/>
+					<Object		Name="19200"/>
+					<Object		Name="38400"/>
+					<Object		Name="57600"/>
+				</Control>
+			</GroupStatic>
+		</GroupStatic>
+	
+		<GroupStatic 	Name="ExternalSensors"	Display_Name="External Feedback"	Output_Name="ExternalSensors"		Collapsible="1">
+			<!-- <Control	Name="enable_external_feedback"	Display_Name="Enable External Feedback (GPS-IMU)"	Output_Name="enable_external_feedback"	Type="CheckBox">
+				<Object		Name="true"			Object_Value="1"/>
+				<Object		Name="false">
+					<Restrictions>
+						<To>
+							<Group	Name="BT_IMU"/>
+						</To>
+						<DoNotWrite>1</DoNotWrite>
+						<IgnoreValidate>1</IgnoreValidate>
+						<Hide>1</Hide>
+					</Restrictions>
+				</Object>
+			</Control> -->
+			<Control	Name="connected_imu"	Display_Name="Connected IMU"	Output_Name="connected_imu"		Type="Choice">
+				<Object		Output_Name="bt_imu"			Name="Witmotion WT901 (BLE)"		Object_Value="1">
+					<Restrictions>
+						<To>
+							<Group 	Name="Serial_IMU"/>
+						</To>
+						<Hide>1</Hide>
+						<IgnoreValidate>1</IgnoreValidate>
+						<DoNotWrite>1</DoNotWrite>
+					</Restrictions>
+				</Object>
+				<Object		Output_Name="serial_imu"		Name="Witmotion (Serial)">
+					<Restrictions>
+						<To>
+							<Group 	Name="BT_IMU"/>
+						</To>
+						<Hide>1</Hide>
+						<IgnoreValidate>1</IgnoreValidate>
+						<DoNotWrite>1</DoNotWrite>
+					</Restrictions>
+				</Object>
+				<Object		Output_Name="none"				Name="None">
+					<Restrictions>
+						<To>
+							<Group 	Name="BT_IMU"/>
+							<Group 	Name="Serial_IMU"/>
+						</To>
+						<Hide>1</Hide>
+						<IgnoreValidate>1</IgnoreValidate>
+						<DoNotWrite>1</DoNotWrite>
+					</Restrictions>
+				</Object>
+			</Control>
+			<GroupStatic 	Name="BT_IMU"		Display_Name="IMU Module"		Output_Name="BT_IMU"			Collapsible="1">
+				<GroupStatic 	Name="Adapter_Config"		Display_Name="Adapter Settings"			Output_Name="Adapter_Config"		Collapsible="0">
+					<Control	Name="scan_time"		Display_Name="Scan Time"				Output_Name="scan_time"		Type="TextBox"		Format="num"	Suffix="ms">
+						<Object		Object_Value="8000.0"/>
+						<Restrictions>
+							<Min>0.00000</Min>
+						</Restrictions>
+					</Control>
+					<Control	Name="max_nodes"		Display_Name="Max Allowed Peripherals"	Output_Name="max_nodes"		Type="SpinBox"		Min="1">
+						<Object		Object_Value="1"/>
+					</Control>
+				</GroupStatic>
+				<GroupStatic 	Name="Peripheral_Config"	Display_Name="Peripheral Settings"		Output_Name="Peripheral_Config"		Collapsible="0">
+					<Control	Name="peripheral_ssid"		Display_Name="Device SSID"				Output_Name="peripheral_ssid"		Type="TextBox"		Format="text">
+						<Object 	Object_Value="WT901BLE68"/>
+					</Control>
+					<Control	Name="mac_address"			Display_Name="MAC Address"				Output_Name="mac_address"			Type="TextBox"		Format="text">
+						<Object 	Object_Value="db:f6:61:f1:0e:d3"/>
+					</Control>
+					<Control	Name="service_name"			Display_Name="Assigned Service Name"	Output_Name="service_name"			Type="TextBox"		Format="text">
+						<Object 	Object_Value="notify_9_axis"/>
+					</Control>
+					<Control	Name="service_uuid"			Display_Name="Serivce UUID"				Output_Name="service_uuid"			Type="TextBox"		Format="text">
+						<Object 	Object_Value="0000ffe5-0000-1000-8000-00805f9a34fb"/>
+					</Control>
+					<Control	Name="ch_uuid"				Display_Name="Characteristic UUID"		Output_Name="ch_uuid"				Type="TextBox"		Format="text">
+						<Object 	Object_Value="0000ffe4-0000-1000-8000-00805f9a34fb"/>
+					</Control>
+					<Control	Name="op_type"				Display_Name="Operation Type"			Output_Name="op_type"				Type="Choice">
+						<Object		Output_Name="NOTIFY"	Name="Notification"		Object_Value="1"/>
+					</Control>
+				</GroupStatic>				
+			</GroupStatic>
+			<GroupStatic	Name="Serial_IMU"	Display_Name="IMU Module"		Output_Name="Serial_IMU"		Collapsible="0">
+				<Control	Name="commport_name_imu"	Display_Name="Comm Port"	Output_Name="commport_name_imu"		Type="TextBox"	Format="text">
+					<Object		Object_Value="COM2"/>
+				</Control>
+				<Control	Name="timeout_imu"			Display_Name="Time Out"		Output_Name="timeout_imu"			Type="SpinBox"	Min="1"		Suffix="ms">
+					<Object		Object_Value="100"/>
+				</Control>
+				<Control	Name="baudrate_imu"			Display_Name="Baud Rate"	Output_Name="baudrate_imu"			Type="Choice"	Suffix="bps">
+					<Object		Name="2400"/>
+					<Object		Name="4800"		Object_Value="1"/>
+					<Object		Name="9600"/>
+					<Object		Name="19200"/>
+					<Object		Name="38400"/>
+					<Object		Name="57600"/>
+				</Control>
+				<Control	Name="buffer_size_imu"		Display_Name="Buffer Size"	Output_Name="buffer_size_imu"		Type="SpinBox"	Min="1"		Suffix="bytes">
+					<Object		Object_Value="100"/>
+				</Control>
+			</GroupStatic>
+				
+		</GroupStatic>
+		
+	</GroupListControl>
+	
+	
+	
+</Configuration>
