@@ -107,6 +107,7 @@ int main_bt()
 int main()
 {
 	// Camera Control Centre ///////////////////////////////////////////////////////////////////////////////////////////
+	
 	// Input Block /////////////////////////////////////////////////////////////////////////////////////////////////////
 	_target T1_t0, T1_t1;
 	T1_t0.ID = 100;
@@ -146,7 +147,7 @@ int main()
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 
 	// Coverage Queue /////////////////////////////////////////////////////////////////////////////////////////////////
-	CoverageBlock CB1;
+	/*CoverageBlock CB1;
 	std::string config_CB1, message_CB1;
 	bool status_CB1 = false;
 	config_CB1 = "config/Camera_Controller-1_d20.xml";
@@ -160,8 +161,42 @@ int main()
 	CB1.PopQueue(out_Q1_CB1);
 	CB1.PopQueue(out_Q1_CB1);
 	CB1.ModifyQueue(out_Q1_CB1, -1);
-	CB1.GetQueue(out_Queue_CB1);
+	CB1.GetQueue(out_Queue_CB1);*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// BT IMU Data Acquisition /////////////////////////////////////////////////////////////////////////////////////////
+	_bt_adapter_config source_config;
+	source_config.address = "";
+	source_config.max_nodes_allowed = 20;
+	source_config.scan_time = 8e3;
+	source_config.name = "";
+
+	_bt_peripheral_config node_config;
+	node_config.address = "db:f6:61:f1:0e:d3";
+	node_config.name = "WT901BLE68";
+
+	std::vector<_bt_service> service_list;
+	service_list.resize(2);
+	service_list[0].name = "notify_9_axis";
+	service_list[0].characteristic_uuid = "0000ffe4-0000-1000-8000-00805f9a34fb";
+	service_list[0].service_uuid = "0000ffe5-0000-1000-8000-00805f9a34fb";
+	service_list[0].packet_size = 247;
+	service_list[0].operation = NOTIFY;
+
+	bt_link::source bt_source;
+	bt_source.Initialize(source_config);
+
+	bt_link::node bt_node;
+	bt_node.Initialize(node_config, service_list);
+	bt_source.Add_Node(bt_node);
+
+	std::vector<uint16_t> in_data{ 0xFF, 0xAA, 0x27, 0x3A, 0x00 };
+	std::string out_data;
+	double yaw{ 0 }, pitch{ 0 }, roll{ 0 };
+
+	bt_source.Use_Service(bt_node.Get_Name(), service_list[0].name, Hex2String(in_data), out_data);
+	std::this_thread::sleep_for(std::chrono::milliseconds(2));
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Command Stack ///////////////////////////////////////////////////////////////////////////////////////////////////
 	CommandBlock CM1;
@@ -169,8 +204,26 @@ int main()
 	std::string message_CM1;
 	std::vector<_asset> in_Assets_CM1 = out_Assets_IB1;
 	std::vector<_target> in_Targets_CM1 = out_Targets_IB1;
+	_cam_state cam_state_CM1;
 
 	CM1.Initialize(config_CM1, message_CM1);
+	CM1.Assign_Camera("cam_1");
 
+	//while (1)
+	//{
+	bt_node.Get_Orientation(yaw, pitch, roll);
+	// BT module mounted at the bottom of the camera
+	// Camera pan (+ve roll) --> Module x-axis (+ve roll)
+	// Camera tilt (+ve pitch)  --> Module y-axis (-ve pitch)
+	// Camera no yaw motion --> constant z-axis (yaw)
+	cam_state_CM1.pan = roll;
+	cam_state_CM1.tilt = -pitch;
+	CM1.CalcRefState(in_Assets_CM1[0], cam_state_CM1, in_Targets_CM1[0]);
+	CM1.GeneratePath();
+	CM1.FollowPath();
+	std::this_thread::sleep_for(std::chrono::milliseconds(2));
+
+	//}
+	
 	return 0;
 }

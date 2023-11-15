@@ -108,7 +108,7 @@ bool OutputBlock::Initialize(const std::string& config_file, std::string& messag
 				temp_cam.network.username = CameraConfig.child("CommSettings").child("NetworkSettings").child_value("username");
 				temp_cam.network.password = CameraConfig.child("CommSettings").child("NetworkSettings").child_value("password");
 			}
-
+			temp_cam.state = temp_cam.initial_state;
 			CamConfig.push_back(temp_cam);
 		}
 	}
@@ -128,13 +128,16 @@ bool OutputBlock::Initialize(const std::string& config_file, std::string& messag
 		message = std::to_string(error) + " parameters are out of range";
 		return false;
 	}
-
 	return true;
 }
 bool OutputBlock::Reinitialize()
 {
 	assigned_cam_index = -1;
 	assigned_cam = "NULL";
+	for (auto& it_cam : CamConfig)
+	{
+		it_cam.state = it_cam.initial_state;
+	}
 
 	return true;
 }

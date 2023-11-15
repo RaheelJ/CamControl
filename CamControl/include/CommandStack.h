@@ -55,7 +55,6 @@ class CommandBlock
 	std::vector<double> Update_SpeedRef(double in_speedrate_pan, double in_speedrate_tilt);
 	bool AddCommands(int tilt_steps, int pan_steps, int zoom_steps, double in_speed_pan, double in_speed_tilt);
 	bool ChangeZoom(int zoom_steps);
-	bool GenerateScanPath(_cam_state);
 
 public:
 	bool Initialize(const std::string config_file, std::string& message);
@@ -64,6 +63,7 @@ public:
 	bool CalcRefState(_asset, _cam_state, _target);
 	bool CalcRefState(_asset, _cam_state, _region_interest);
 	bool GeneratePath();
+	bool GenerateScanPath(_cam_state);
 	bool FollowPath();
 };
 

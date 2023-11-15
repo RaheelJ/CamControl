@@ -22,7 +22,16 @@ bool CommandBlock::Reinitialize()
 }
 bool CommandBlock::Assign_Camera(std::string cam_ID)
 {
-	return output_block.Assign_Camera(cam_ID);
+	output_block.Assign_Camera(cam_ID);
+
+	std::vector<_rule_fuzzy> rules_pan, rules_tilt;
+	std::vector<std::string> temp_rule_pan = { "ang_err,GREATER_EQUAL,6,100", "ang_err,LESSER,6,100" };
+	std::vector<std::string> temp_rule_tilt = { "ang_err,GREATER_EQUAL,6,100", "ang_err,LESSER,6,100" };
+	Parse_Rules(temp_rule_pan, rules_pan);
+	Parse_Rules(temp_rule_tilt, rules_tilt);
+	Set_Rules(rules_pan, rules_tilt);
+
+	return true;
 }
 
 bool CommandBlock::Parse_Rules(std::vector<std::string> in_Rules_String, std::vector<_rule_fuzzy>& out_Rules)
@@ -46,7 +55,7 @@ bool CommandBlock::Parse_Rules(std::vector<std::string> in_Rules_String, std::ve
 				temp_rule.err_variable = rule_element;
 				break;
 			case 1:
-				temp_operator = 0*(rule_element == "<") + 1*(rule_element == ">") + 2*(rule_element == "<=") + 3*(rule_element == ">=") + 4*(rule_element == "=");
+				temp_operator = 0*(rule_element == "LESSER") + 1*(rule_element == "GREATER") + 2*(rule_element == "LESSER_EQUAL") + 3*(rule_element == "GREATER_EQUAL") + 4*(rule_element == "EQUAL");
 				temp_rule.comp_operator = (_operator)temp_operator;
 				break;
 			case 2:
@@ -163,6 +172,10 @@ bool CommandBlock::ChangeZoom(int zoom_steps)
 }
 bool CommandBlock::GenerateScanPath(_cam_state cam_state)
 {
+	double max_pan_scan = 180, min_pan_scan = -180;
+	double max_tilt_scan = 45, min_tilt_scan = 0;
+	double scan_speed = 40;
+ 
 
 	return true;
 }
