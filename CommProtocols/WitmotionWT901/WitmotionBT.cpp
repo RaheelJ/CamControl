@@ -367,6 +367,7 @@ double bt_link::node::Calc_Value(uint16_t h_byte, uint16_t l_byte, double max_va
 
 bt_link::source::~source()
 {
+
 	Nodes.clear();
 }
 bool bt_link::source::Initialize(_bt_adapter_config in_adapter_config)
