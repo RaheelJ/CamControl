@@ -25,8 +25,8 @@ bool CommandBlock::Assign_Camera(std::string cam_ID)
 	output_block.Assign_Camera(cam_ID);
 
 	std::vector<_rule_fuzzy> rules_pan, rules_tilt;
-	std::vector<std::string> temp_rule_pan = { "ang_err,GREATER_EQUAL,6,100", "ang_err,LESSER,6,100" };
-	std::vector<std::string> temp_rule_tilt = { "ang_err,GREATER_EQUAL,6,100", "ang_err,LESSER,6,100" };
+	std::vector<std::string> temp_rule_pan = { "ang_err,GREATER_EQUAL,6,6", "ang_err,LESSER,6,6" };
+	std::vector<std::string> temp_rule_tilt = { "ang_err,GREATER_EQUAL,6,6", "ang_err,LESSER,6,6" };
 	Parse_Rules(temp_rule_pan, rules_pan);
 	Parse_Rules(temp_rule_tilt, rules_tilt);
 	Set_Rules(rules_pan, rules_tilt);

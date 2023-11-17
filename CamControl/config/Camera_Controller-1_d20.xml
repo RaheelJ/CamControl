@@ -125,7 +125,7 @@
             <NetworkSettings>
                 <username>admin</username>
                 <password>admin</password>
-                <IP>127.000.000.001</IP>
+                <IP>192.168.32.150</IP>
                 <port>200</port>
             </NetworkSettings>
         </CommSettings>

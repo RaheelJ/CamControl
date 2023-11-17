@@ -15,9 +15,11 @@ std::string Hex2String(std::vector<uint16_t> in_Hex)
 std::vector<uint16_t> String2Hex(std::string in_string)
 {
 	std::vector<uint16_t> out_Hex;
-	for (const auto& it : in_string)
+	out_Hex.resize(in_string.size());
+	for (int i = 0; i < out_Hex.size(); i++)
 	{
-		out_Hex.push_back(it);
+		out_Hex[i] = in_string[i];
+		out_Hex[i] = 0b0000000011111111 & out_Hex[i];
 	}
 	return out_Hex;
 }
@@ -215,18 +217,18 @@ int bt_link::node::Use_Service(std::string in_service_name, std::string in_Data,
 									try
 									{
 										peripheral.notify(it_service_user.service_uuid, it_service_user.characteristic_uuid, [&](SimpleBLE::ByteArray Received_Bytes) {
-											if (print_on)
-											{
-												std::vector<uint16_t> Hex_Data = String2Hex(Received_Bytes);
-												std::cout << "Received Data: ";
-												for (const auto& it : Hex_Data)
-												{
-													std::cout << it << " ";
-												}
-												std::cout << std::endl;
-											}
 											try
 											{
+												if (print_on)
+												{
+													std::vector<uint16_t> Hex_Data = String2Hex(Received_Bytes);
+													std::cout << "Received Data: ";
+													for (const auto& it : Hex_Data)
+													{
+														std::cout << it << " ";
+													}
+													std::cout << std::endl;
+												}
 												Notifications[0] = Received_Bytes;
 											}
 											catch (std::string err)
@@ -323,9 +325,12 @@ bool bt_link::node::Get_Orientation(double& out_yaw, double& out_pitch, double& 
 			if (Subscriptions[i].name == "notify_9_axis")
 			{
 				HexArray = String2Hex(Notifications[i]);
-				yaw = Calc_Value(HexArray[19], HexArray[18], 180);			//deg(-180 to 180)
-				pitch = Calc_Value(HexArray[17], HexArray[16], 180);		//deg(-180 to 180)
-				roll = Calc_Value(HexArray[15], HexArray[14], 180);			//deg(-180 to 180)
+				if (HexArray.size() >= 20)
+				{
+					yaw = Calc_Value(HexArray[19], HexArray[18], 180);			//deg(-180 to 180)
+					pitch = Calc_Value(HexArray[17], HexArray[16], 180);		//deg(-180 to 180)
+					roll = Calc_Value(HexArray[15], HexArray[14], 180);			//deg(-180 to 180)
+				}
 				break;
 			}
 		}
@@ -443,9 +448,9 @@ bool bt_link::source::Add_Node(node& in_node)
 	if (!found && in_node.Is_Initialized())
 	{
 		adapter.scan_for(adapter_config.scan_time);
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		temp_peripherals = adapter.scan_get_results();
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		for (auto it_peripheral : temp_peripherals)
 		{
 			if (it_peripheral.identifier() == in_node.Get_Name())

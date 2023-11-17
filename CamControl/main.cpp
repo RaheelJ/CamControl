@@ -168,7 +168,7 @@ int main()
 	_bt_adapter_config source_config;
 	source_config.address = "";
 	source_config.max_nodes_allowed = 20;
-	source_config.scan_time = 8e3;
+	source_config.scan_time = 6e3;
 	source_config.name = "";
 
 	_bt_peripheral_config node_config;
@@ -195,7 +195,7 @@ int main()
 	double yaw{ 0 }, pitch{ 0 }, roll{ 0 };
 
 	bt_source.Use_Service(bt_node.Get_Name(), service_list[0].name, Hex2String(in_data), out_data);
-	std::this_thread::sleep_for(std::chrono::milliseconds(2));
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Command Stack ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,21 +209,21 @@ int main()
 	CM1.Initialize(config_CM1, message_CM1);
 	CM1.Assign_Camera("cam_1");
 
-	//while (1)
-	//{
-	bt_node.Get_Orientation(yaw, pitch, roll);
-	// BT module mounted at the bottom of the camera
-	// Camera pan (+ve roll) --> Module x-axis (+ve roll)
-	// Camera tilt (+ve pitch)  --> Module y-axis (-ve pitch)
-	// Camera no yaw motion --> constant z-axis (yaw)
-	cam_state_CM1.pan = roll;
-	cam_state_CM1.tilt = -pitch;
-	CM1.CalcRefState(in_Assets_CM1[0], cam_state_CM1, in_Targets_CM1[0]);
-	CM1.GeneratePath();
-	CM1.FollowPath();
-	std::this_thread::sleep_for(std::chrono::milliseconds(2));
-
-	//}
+	while (1)
+	{
+		// BT module mounted at the bottom of the camera
+		// Camera pan (+ve yaw) --> Module z-axis (-ve yaw)
+		// Camera tilt (+ve pitch)  --> Module y-axis (-ve pitch)
+		// Camera no roll motion --> constant x-axis (roll)
+		bt_node.Get_Orientation(yaw, pitch, roll);
+		
+		cam_state_CM1.pan = -yaw;
+		cam_state_CM1.tilt = -pitch;
+		CM1.CalcRefState(in_Assets_CM1[0], cam_state_CM1, in_Targets_CM1[0]);
+		CM1.GeneratePath();
+		CM1.FollowPath();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
 	
 	return 0;
 }
